@@ -45,6 +45,15 @@ const server = http.createServer((q, r) => {
     ok(await p.evaluate(() => !document.querySelector('#appdlg').open), 'dialog closes');
     const scopes = await p.evaluate(() => navigator.serviceWorker.getRegistrations().then(rs => rs.map(r => new URL(r.scope).pathname)));
     ok(JSON.stringify(scopes) === '["/ap-labs/"]', 'browser visitors only get the landing page saved', JSON.stringify(scopes));
+    for (const [site, title] of COURSES) {
+      await p.goto(BASE + '/' + site + '/'); await p.waitForTimeout(500);
+      ok(await p.isVisible('#app-btn'), title + ': "Get the app" button shows');
+      await p.click('#app-btn'); await p.waitForTimeout(200);
+      ok(await p.evaluate(() => document.querySelector('#app-dlg').open && /Add to Home Screen/.test(document.querySelector('#app-dlg').textContent)), title + ': install steps open');
+      await p.click('#app-dlg .approw button'); await p.waitForTimeout(150);
+      ok(await p.evaluate(() => !document.querySelector('#app-dlg').open), title + ': steps close');
+      ok(await p.evaluate(() => document.querySelector('link[rel=manifest]').getAttribute('href') === '/ap-labs/manifest.webmanifest'), title + ': installs the same AP Labs app');
+    }
     ok(!errs.length, 'no page errors', errs.join(' | '));
     await ctx.close();
   }
@@ -57,6 +66,8 @@ const server = http.createServer((q, r) => {
     p.on('pageerror', e => errs.push(e.message));
     await p.goto(BASE + '/ap-labs/');
     ok(await p.isHidden('#install'), '"Get the app" button is hidden inside the app');
+    for (const [site, title] of COURSES) { await p.goto(BASE + '/' + site + '/'); await p.waitForTimeout(400); ok(await p.isHidden('#app-btn'), title + ': button hidden inside the app'); }
+    await p.goto(BASE + '/ap-labs/');
     const active = () => p.evaluate(() => navigator.serviceWorker.getRegistrations().then(rs => rs.filter(r => r.active).map(r => new URL(r.scope).pathname).sort()));
     let scopes = [];
     for (let i = 0; i < 60 && scopes.length < COURSES.length + 1; i++) { scopes = await active(); if (scopes.length < COURSES.length + 1) await p.waitForTimeout(500); }
