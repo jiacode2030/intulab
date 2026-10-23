@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AP Science Labs</title>
+<meta name="description" content="Interactive, intuition-first study sites for AP sciences.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230A1220'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%235CB8FF'/%3E%3Cellipse cx='16' cy='16' rx='12' ry='5' fill='none' stroke='%23A78BFA' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<script>
+/* Apply the saved theme before first paint, so there is no flash. */
+try{var t=localStorage.getItem('hub-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}
+</script>
+<style>
+:root{
+  --bg:#F4F7FC; --surface:#FFFFFF; --sunk:#E8EEF7; --ink:#0E1B2E; --muted:#4A5B73; --line:#D4DEEB;
+  --brand:#1F4FD6; --violet:#6D4ED8; --focus:#1F4FD6;
+  --hero-a:#1F4FD614; --hero-b:#6D4ED812; --dot:31,79,214;
+  --shadow:0 1px 2px rgba(20,45,90,.06),0 6px 18px rgba(20,45,90,.07);
+  --shadow-hi:0 2px 4px rgba(20,45,90,.08),0 18px 38px rgba(20,45,90,.14);
+  --mix:58%; --mix-to:#000; --on-accent:#FFFFFF;
+  --f-display:"Bricolage Grotesque","Avenir Next",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0A1220; --surface:#101A2C; --sunk:#16223A; --ink:#E4ECF7; --muted:#9AACC5; --line:#22324D;
+    --brand:#5CB8FF; --violet:#A78BFA; --focus:#7CC7FF;
+    --hero-a:#5CB8FF1c; --hero-b:#A78BFA1a; --dot:124,180,255;
+    --shadow:none; --shadow-hi:0 2px 4px rgba(0,0,0,.4),0 16px 34px rgba(0,0,0,.45);
+    --mix:100%; --mix-to:#fff; --on-accent:#04101F;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0A1220; --surface:#101A2C; --sunk:#16223A; --ink:#E4ECF7; --muted:#9AACC5; --line:#22324D;
+  --brand:#5CB8FF; --violet:#A78BFA; --focus:#7CC7FF;
+  --hero-a:#5CB8FF1c; --hero-b:#A78BFA1a; --dot:124,180,255;
+  --shadow:none; --shadow-hi:0 2px 4px rgba(0,0,0,.4),0 16px 34px rgba(0,0,0,.45);
+  --mix:100%; --mix-to:#fff; --on-accent:#04101F;
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--f-body);overflow-x:hidden}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:8px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+.skip{position:absolute;left:12px;top:-60px;background:var(--surface);padding:10px 14px;border-radius:8px;z-index:10}
+.skip:focus{top:12px}
+
+/* header */
+.top{position:relative;z-index:2}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:72px}
+.brand{display:flex;align-items:center;gap:10px;font:800 18px/1 var(--f-display);letter-spacing:-.02em;text-decoration:none;min-height:44px}
+.brand svg{flex:none}
+.actions{display:flex;gap:8px;align-items:center}
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;min-height:44px;min-width:44px;justify-content:center;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink);font:500 14px/1 var(--f-body);text-decoration:none;cursor:pointer;transition:border-color .2s var(--ease),background .2s var(--ease)}
+.btn-ghost:hover{border-color:var(--brand)}
+.btn-ghost svg{width:18px;height:18px;flex:none}
+
+/* hero */
+.hero{position:relative;margin-top:-72px;padding:148px 0 88px;overflow:hidden;isolation:isolate;
+  background:radial-gradient(60% 70% at 18% 30%,var(--hero-a),transparent 70%),radial-gradient(50% 60% at 85% 20%,var(--hero-b),transparent 70%)}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:120px;background:linear-gradient(transparent,var(--bg));z-index:-1}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font:500 12.5px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 20px}
+.eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--brand);box-shadow:0 0 0 4px var(--hero-a)}
+h1{font:800 clamp(40px,8vw,80px)/1 var(--f-display);letter-spacing:-.035em;margin:0 0 20px;max-width:12ch}
+h1 span{background:linear-gradient(100deg,var(--brand),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tagline{font-size:clamp(17px,2.2vw,20px);color:var(--muted);max-width:44ch;margin:0 0 32px}
+.cta{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 22px;border-radius:999px;background:var(--ink);color:var(--bg);font:600 15px/1 var(--f-body);text-decoration:none;transition:transform .2s var(--ease)}
+.cta:hover{transform:translateY(-2px)}
+.cta svg{width:18px;height:18px}
+
+/* courses */
+main{position:relative;z-index:1;padding-bottom:72px}
+.head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:16px 24px;margin-bottom:24px}
+h2{font:800 clamp(26px,3.4vw,34px)/1.1 var(--f-display);letter-spacing:-.025em;margin:0}
+.tools{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;border:0}
+.chip{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted);font:500 14px/1 var(--f-body);cursor:pointer;transition:all .2s var(--ease)}
+.chip:hover{color:var(--ink);border-color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.search{position:relative;flex:1 1 220px;max-width:280px}
+.search svg{position:absolute;left:14px;top:50%;width:18px;height:18px;transform:translateY(-50%);color:var(--muted);pointer-events:none}
+.search input{width:100%;min-height:44px;padding:0 14px 0 42px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:15px var(--f-body)}
+.search input::placeholder{color:var(--muted);opacity:1}
+.search input:focus-visible{outline-offset:1px;border-radius:999px}
+
+.grid{list-style:none;margin:0;padding:0;display:grid;gap:20px;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr))}
+.card{--a:color-mix(in oklab,var(--accent) var(--mix),var(--mix-to));position:relative;display:flex;flex-direction:column;height:100%;padding:24px;border-radius:18px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);text-decoration:none;color:inherit;overflow:hidden;
+  transition:transform .28s var(--ease),box-shadow .28s var(--ease),border-color .28s var(--ease)}
+.card::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--accent)}
+a.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hi);border-color:color-mix(in oklab,var(--accent) 55%,var(--line))}
+a.card:focus-visible{outline-offset:4px;border-radius:18px}
+.card .row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px}
+.icon{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;color:var(--a);background:color-mix(in oklab,var(--accent) 14%,transparent);flex:none}
+.icon svg{width:28px;height:28px}
+.subj{font:500 12px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h3{font:800 23px/1.15 var(--f-display);letter-spacing:-.02em;margin:0 0 4px}
+.course{font-size:14px;color:var(--muted);margin:0 0 12px}
+.desc{margin:0 0 16px}
+.topics{list-style:none;display:flex;flex-wrap:wrap;gap:6px;margin:0 0 22px;padding:0}
+.topics li{font-size:13px;padding:4px 10px;border-radius:999px;background:var(--sunk);color:var(--muted)}
+.foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px}
+.open{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;background:var(--a);color:var(--on-accent);font:600 14px/1 var(--f-body);transition:gap .2s var(--ease)}
+a.card:hover .open{gap:12px}
+.open svg{width:16px;height:16px}
+.meta{font-size:14px;color:var(--muted)}
+.prog{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted)}
+.prog b{color:var(--ink);font-weight:600}
+.prog>span{white-space:nowrap}
+.ring{width:40px;height:40px;transform:rotate(-90deg);flex:none}
+.ring circle{fill:none;stroke-width:4}
+.ring .track{stroke:var(--sunk)}
+.ring .val{stroke:var(--a);stroke-linecap:round;transition:stroke-dashoffset .9s var(--ease)}
+.card.soon{box-shadow:none;background:transparent;border-style:dashed}
+.card.soon::before{opacity:.35}
+.card.soon .icon{filter:grayscale(.6);opacity:.7}
+.card.soon h3,.card.soon .desc{color:var(--muted)}
+.badge{display:inline-flex;align-items:center;min-height:32px;padding:0 12px;border-radius:999px;border:1px solid var(--line);font:500 12px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.empty{padding:48px 0;text-align:center;color:var(--muted)}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding:32px 0 40px;color:var(--muted);font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px 32px}
+footer p{margin:0 0 4px}
+footer a{min-height:44px;display:inline-flex;align-items:center}
+
+@media (max-width:560px){
+  .wrap{padding:0 16px}
+  .hero{padding:124px 0 56px}
+  .tl{display:none}
+  .search{max-width:none}
+  .card{padding:20px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#courses">Skip to courses</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./" aria-label="AP Science Labs home">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0A1220"/><circle cx="16" cy="16" r="4" fill="#5CB8FF"/><ellipse cx="16" cy="16" rx="12" ry="5" fill="none" stroke="#A78BFA" stroke-width="2"/><ellipse cx="16" cy="16" rx="12" ry="5" fill="none" stroke="#5CB8FF" stroke-width="1.5" opacity=".6" transform="rotate(60 16 16)"/></svg>
+      AP Science Labs
+    </a>
+    <div class="actions">
+      <a class="btn-ghost" id="report" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 22V4a1 1 0 0 1 1-1h11l-2 4 2 4H5"/></svg>
+        <span class="tl">Report an issue</span><span class="sr"> (opens GitHub in a new tab)</span>
+      </a>
+      <button class="btn-ghost" id="theme" type="button" aria-label="Color theme: Auto. Click to change.">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg>
+        <span class="tl" id="theme-l">Auto</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<section class="hero" aria-labelledby="title">
+  <canvas id="field" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <p class="eyebrow"><i></i>Free · Interactive · Unofficial</p>
+    <h1 id="title">AP Science <span>Labs</span></h1>
+    <p class="tagline">Interactive, intuition-first study sites for AP sciences.</p>
+    <a class="cta" href="#courses">Browse courses
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
+  </div>
+</section>
+
+<main id="courses" tabindex="-1">
+  <div class="wrap">
+    <div class="head">
+      <h2>Courses</h2>
+      <div class="tools">
+        <fieldset class="chips" id="filters"><legend class="sr">Filter by subject</legend></fieldset>
+        <div class="search">
+          <label class="sr" for="q">Search courses</label>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="q" type="search" placeholder="Search courses or topics" autocomplete="off">
+        </div>
+      </div>
+    </div>
+    <ul class="grid" id="grid"></ul>
+    <p class="empty" id="empty" hidden>No courses match. Try another subject or search.</p>
+    <p class="sr" id="status" aria-live="polite"></p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <p>Unofficial study aids. Not affiliated with the College Board.</p>
+      <p>Use these to study, not on graded work.</p>
+      <p>Anonymous, cookie-free page-view counts only.</p>
+    </div>
+    <div><a id="report2" href="#" target="_blank" rel="noopener">Report an issue<span class="sr"> (opens GitHub in a new tab)</span></a></div>
+  </div>
+</footer>
+
+<script src="courses.js"></script>
+<script>
+/* Analytics: the one config line. Same code on every course site, so all report to one GoatCounter property. */
+const GOATCOUNTER = 'aplabs';
+const FEEDBACK_REPO = 'jiacode2030/ap-labs-feedback';
+
+(function(){
+'use strict';
+const $=s=>document.querySelector(s);
+const COURSES=Array.isArray(window.COURSES)?window.COURSES:[];
+const REDUCE=matchMedia('(prefers-reduced-motion: reduce)');
+
+/* GoatCounter: anonymous, cookie-free. Loads only on the live site and only once a real code is set. */
+const gcOn=/\.github\.io$/.test(location.hostname)&&GOATCOUNTER&&GOATCOUNTER!=='YOUR-CODE';
+if(gcOn){const s=document.createElement('script');s.async=true;s.src='https://gc.zgo.at/count.js';s.dataset.goatcounter='https://'+GOATCOUNTER+'.goatcounter.com/count';document.head.appendChild(s);}
+function event(name){try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:name,title:name,event:true});}catch(e){}}
+
+/* Report an issue: a pre-filled issue in the shared feedback repo. */
+const issue='https://github.com/'+FEEDBACK_REPO+'/issues/new?labels='+encodeURIComponent('course:landing')+
+  '&title='+encodeURIComponent('[Landing page] ')+
+  '&body='+encodeURIComponent('**Course:** Landing page\n**Page:** '+location.href+'\n\n**What happened, or what should change?**\n\n');
+$('#report').href=issue;$('#report2').href=issue;
+
+/* Theme: auto -> light -> dark, remembered in hub-theme. */
+const NAMES={auto:'Auto',light:'Light',dark:'Dark'};
+let mode='auto';try{const t=localStorage.getItem('hub-theme');if(NAMES[t])mode=t;}catch(e){}
+function applyTheme(m){mode=m;const r=document.documentElement;if(m==='auto')r.removeAttribute('data-theme');else r.setAttribute('data-theme',m);
+  $('#theme-l').textContent=NAMES[m];$('#theme').setAttribute('aria-label','Color theme: '+NAMES[m]+'. Click to change.');}
+applyTheme(mode);
+$('#theme').addEventListener('click',()=>{const n={auto:'light',light:'dark',dark:'auto'}[mode];applyTheme(n);try{localStorage.setItem('hub-theme',n);}catch(e){}field.recolor();});
+
+/* Progress: read-only. The course sites store {moduleId: 1} under their progressKey. */
+function progress(c){
+  if(!c.progressKey)return null;
+  let raw=null;try{raw=localStorage.getItem(c.progressKey);}catch(e){return null;}
+  if(raw==null)return null;
+  let d;try{d=JSON.parse(raw);}catch(e){return null;}
+  if(!d||typeof d!=='object')return null;
+  let n=0;try{n=Object.keys(d).filter(k=>d[k]).length;}catch(e){return null;}
+  const total=Number.isFinite(c.modules)&&c.modules>0?c.modules:null;
+  if(total)n=Math.min(n,total);
+  return {done:n,total};
+}
+
+/* Subject icons (inline SVG). Add one here only for a brand-new subject. */
+const P='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">';
+const ICONS={
+  Physics:P+'<circle cx="12" cy="12" r="1.8" fill="currentColor"/><ellipse cx="12" cy="12" rx="10" ry="4"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/></svg>',
+  Chemistry:P+'<path d="M9 3h6M10 3v6L4.5 18.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3"/><path d="M7 15h10"/><circle cx="10" cy="18" r=".6" fill="currentColor"/><circle cx="14" cy="17.5" r=".6" fill="currentColor"/></svg>',
+  Biology:P+'<path d="M7 3c0 6 10 6 10 12s-10 3-10 6M17 3c0 6-10 6-10 12s10 3 10 6"/><path d="M8.5 6h7M8.5 18h7M10 9.5h4M10 14.5h4"/></svg>',
+  Math:P+'<path d="M4 20c2.5 0 3-16 6-16s2.5 12 5 12 2-6 5-6"/><path d="M3 20h18"/></svg>',
+  Science:P+'<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>'
+};
+const ARROW='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const safeColor=c=>/^#[0-9a-f]{3,8}$/i.test(c||'')?c:'#5CB8FF';
+const safeUrl=u=>/^https?:\/\//i.test(u||'')||/^\.?\//.test(u||'')?u:'#';
+
+function ring(p){
+  const R=16,C=2*Math.PI*R,f=p.total?p.done/p.total:0;
+  const label=p.total?`${p.done} of ${p.total} modules done`:`${p.done} module${p.done===1?'':'s'} done`;
+  const svg=p.total?`<svg class="ring" viewBox="0 0 40 40" aria-hidden="true"><circle class="track" cx="20" cy="20" r="${R}"/><circle class="val" cx="20" cy="20" r="${R}" stroke-dasharray="${C.toFixed(2)}" stroke-dashoffset="${(C*(1-f)).toFixed(2)}"/></svg>`:'';
+  return `<span class="prog">${svg}<span><b>${p.done}</b>${esc(label.slice(String(p.done).length))}</span></span>`;
+}
+
+function card(c){
+  const live=c.status==='live';
+  const icon=ICONS[c.subject]||ICONS.Science;
+  const topics=(Array.isArray(c.topics)?c.topics:[]).slice(0,5).map(t=>`<li>${esc(t)}</li>`).join('');
+  const p=live?progress(c):null;
+  const left=live?(p?ring(p):(Number.isFinite(c.modules)?`<span class="meta">${c.modules} modules</span>`:'<span></span>')):'<span class="badge">Coming soon</span>';
+  const right=live?`<span class="open" aria-hidden="true">Open${ARROW}</span>`:'';
+  const inner=`<div class="row"><span class="icon">${icon}</span><span class="subj">${esc(c.subject)}</span></div>
+    <h3>${esc(c.title)}</h3><p class="course">${esc(c.course)}</p><p class="desc">${esc(c.description)}</p>
+    <ul class="topics" aria-label="Topics">${topics}</ul><div class="foot">${left}${right}</div>`;
+  const style=`style="--accent:${safeColor(c.accent)}"`;
+  return live
+    ? `<li><a class="card" href="${esc(safeUrl(c.url))}" data-id="${esc(c.id)}" ${style}>${inner}</a></li>`
+    : `<li><div class="card soon" aria-disabled="true" ${style}>${inner}</div></li>`;
+}
+
+/* Filters: only subjects that have at least one course. */
+const ORDER=['Physics','Chemistry','Biology','Math'];
+const subjects=[...new Set(COURSES.map(c=>c.subject))].sort((a,b)=>(ORDER.indexOf(a)+1||99)-(ORDER.indexOf(b)+1||99));
+let subject='All',query='';
+const fs=$('#filters');
+['All',...subjects].forEach(s=>{const b=document.createElement('button');b.type='button';b.className='chip';b.textContent=s;b.setAttribute('aria-pressed',String(s==='All'));
+  b.addEventListener('click',()=>{subject=s;fs.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));render();});fs.appendChild(b);});
+if(subjects.length<2)fs.hidden=true;
+
+function render(){
+  const q=query.trim().toLowerCase();
+  const list=COURSES.filter(c=>(subject==='All'||c.subject===subject)&&
+    (!q||[c.title,c.course,c.subject,c.description,...(c.topics||[])].join(' ').toLowerCase().includes(q)));
+  /* live courses first, then coming soon, keeping file order */
+  list.sort((a,b)=>(a.status==='live'?0:1)-(b.status==='live'?0:1));
+  $('#grid').innerHTML=list.map(card).join('');
+  $('#empty').hidden=list.length>0;
+  $('#status').textContent=list.length+' course'+(list.length===1?'':'s')+' shown';
+}
+$('#q').addEventListener('input',e=>{query=e.target.value;render();});
+$('#grid').addEventListener('click',e=>{const a=e.target.closest('a.card');if(a)event('open:'+a.dataset.id);});
+render();
+/* progress may change in another tab */
+addEventListener('storage',e=>{if(!e.key||COURSES.some(c=>c.progressKey===e.key))render();});
+addEventListener('pageshow',e=>{if(e.persisted)render();});
+
+/* Hero background: slow drifting charges with faint field lines between near neighbours. */
+const field=(function(){
+  const cv=$('#field'),ctx=cv.getContext('2d');let W=0,H=0,dpr=1,pts=[],rgb='124,180,255',raf=0,visible=true;
+  function recolor(){rgb=getComputedStyle(document.documentElement).getPropertyValue('--dot').trim()||rgb;if(REDUCE.matches||!raf)draw();}
+  function size(){const r=cv.getBoundingClientRect();dpr=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);
+    const n=Math.round(Math.min(70,Math.max(24,W*H/14000)));let s=7;const rnd=()=>(s=(s*16807)%2147483647)/2147483647;
+    pts=Array.from({length:n},()=>({x:rnd()*W,y:rnd()*H,vx:(rnd()-.5)*.22,vy:(rnd()-.5)*.22,r:1+rnd()*1.6,q:rnd()<.5}));}
+  function draw(){ctx.clearRect(0,0,W,H);const L=130;
+    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const a=pts[i],b=pts[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.hypot(dx,dy);
+      if(d<L){const al=(1-d/L)*.22;ctx.strokeStyle=`rgba(${rgb},${al.toFixed(3)})`;ctx.lineWidth=1;ctx.beginPath();
+        /* a gentle arc, like a field line, bowing away from the midpoint */
+        const mx=(a.x+b.x)/2-dy*.18,my=(a.y+b.y)/2+dx*.18;ctx.moveTo(a.x,a.y);ctx.quadraticCurveTo(mx,my,b.x,b.y);ctx.stroke();}}
+    for(const p of pts){ctx.fillStyle=`rgba(${rgb},${p.q?.75:.45})`;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,7);ctx.fill();}}
+  function step(){for(const p of pts){p.x+=p.vx;p.y+=p.vy;if(p.x<-10)p.x=W+10;if(p.x>W+10)p.x=-10;if(p.y<-10)p.y=H+10;if(p.y>H+10)p.y=-10;}draw();raf=requestAnimationFrame(step);}
+  function start(){stop();if(!REDUCE.matches&&visible&&!document.hidden)raf=requestAnimationFrame(step);else draw();}
+  function stop(){cancelAnimationFrame(raf);raf=0;}
+  size();recolor();start();
+  let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{size();draw();},120);});
+  document.addEventListener('visibilitychange',start);
+  if(REDUCE.addEventListener)REDUCE.addEventListener('change',start);
+  matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',recolor);
+  if('IntersectionObserver'in window)new IntersectionObserver(e=>{visible=e[0].isIntersecting;start();}).observe(cv);
+  return {recolor};
+})();
+})();
+</script>
+</body>
+</html>
