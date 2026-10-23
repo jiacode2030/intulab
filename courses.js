@@ -18,9 +18,9 @@ window.COURSES = [
   {
     id: 'mechanics',
     title: 'Mechanics Lab',
-    course: 'Physics 1 and AP Physics C: Mechanics',
+    course: 'AP Physics C: Mechanics',
     subject: 'Physics',
-    description: 'See the motion first: live simulations, worked examples and randomized practice from kinematics to waves.',
+    description: 'See the motion first: live simulations, worked examples and randomized practice from kinematics to oscillations, plus waves as an extra.',
     modules: 32,
     topics: ['Kinematics', "Newton's laws", 'Energy', 'Rotation', 'Oscillations'],
     url: 'https://jiacode2030.github.io/physics-mechanics/',

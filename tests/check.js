@@ -73,7 +73,8 @@ const server = http.createServer((q, r) => {
   /* behaviour: filters, search, theme toggle, read-only storage, no data */
   const ctx = await b.newContext({ viewport: { width: 1280, height: 900 } }); const p = await ctx.newPage();
   await p.goto(URL); await p.evaluate(s => { for (const k in s) localStorage.setItem(k, s[k]); }, SEED); await p.reload();
-  const before = await p.evaluate(() => JSON.stringify({ ...localStorage }));
+  const snap = () => p.evaluate(() => JSON.stringify(Object.keys(localStorage).filter(k => k !== 'hub-theme').sort().map(k => [k, localStorage.getItem(k)])));
+  const before = await snap();
   ok(JSON.stringify(await p.$$eval('.chip', c => c.map(x => x.textContent))) === '["All","Physics","Chemistry"]', 'only subjects that have a course');
   await p.click('.chip:text("Chemistry")'); ok(await p.$$eval('.card', c => c.length) === 1, 'Chemistry filter');
   await p.click('.chip:text("All")'); await p.fill('#q', 'induction'); ok(await p.$$eval('.card h3', c => c.map(x => x.textContent).join()) === 'E&M Lab', 'search by topic');
@@ -81,7 +82,7 @@ const server = http.createServer((q, r) => {
   await p.fill('#q', '');
   await p.keyboard.press('Tab'); await p.keyboard.press('Tab');
   await p.click('#theme'); ok(await p.evaluate(() => localStorage.getItem('hub-theme') === 'light' && document.documentElement.dataset.theme === 'light'), 'theme saved in hub-theme');
-  const after = await p.evaluate(() => { const o = { ...localStorage }; delete o['hub-theme']; return JSON.stringify(o); });
+  const after = await snap();
   ok(after === before, 'course keys never written');
   ok(await p.evaluate(() => [...document.querySelectorAll('a.card')].every(a => a.href.startsWith('https://jiacode2030.github.io/'))), 'cards are real links');
   ok(await p.evaluate(() => document.querySelectorAll('.card.soon a').length === 0), 'coming-soon cards are not links');
