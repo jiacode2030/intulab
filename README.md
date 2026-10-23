@@ -11,6 +11,21 @@ It's plain static files with no build step:
 
 > Unofficial study aids. Not affiliated with the College Board. Use these to study, not on graded work.
 
+## The AP Labs app
+
+AP Labs can be installed as an app (a Progressive Web App), with no app store involved. On iPhone it's Share → Add to Home Screen; on Android it's ⋮ → Install app. The **Get the app** button on the landing page shows these steps, or opens Chrome's install prompt directly.
+
+- `manifest.webmanifest` holds the app's name, colors and icons. Its `scope` is `/`, so Mechanics, E&M and Chemistry open inside the app. Every AP page links to this manifest, so "Add to Home Screen" from any of them installs the same app.
+- `icons/` holds the app icons: `any`, `maskable` (Android) and `apple-touch-icon.png` (iPhone).
+- Each AP site has its own `sw.js` (a service worker). It loads pages from the network first, so updates show up right away, and falls back to the saved copy when offline. Google Fonts are saved after the first download. Analytics and other sites are never touched.
+- When the installed app opens, the landing page also registers each live course's `sw.js`, so all courses work offline from the first launch. Browser visitors only save the landing page.
+- iPhone and iPad keep the app's storage separate from Safari, so progress made in Safari doesn't show in the app.
+- PHY 103 (Princeton Labs) is not part of this app.
+
+A new AP course needs the same head tags (manifest, `apple-touch-icon`, `theme-color`), a `sw.js` (copy one, change the `aplabs-<site>` cache name) and the one-line registration. Then add it to `courses.js`.
+
+Test it with `node tests/app.js`. Run it from this repo, with the course repos cloned next to it; it serves them at their github.io paths. It checks that Chrome considers the app installable, that the Get the app dialog works, that the installed app saves every course, and that every page opens offline at phone width.
+
 ## Add a course
 
 Add one entry to `courses.js`. Nothing else needs to change.

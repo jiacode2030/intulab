@@ -6,6 +6,14 @@
 <title>AP Labs</title>
 <meta name="description" content="Interactive, intuition-first study sites for AP sciences.">
 <meta name="color-scheme" content="light dark">
+<link rel="manifest" href="/ap-labs/manifest.webmanifest">
+<meta name="theme-color" content="#F4F7FC" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A1220" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="AP Labs">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230A1220'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%235CB8FF'/%3E%3Cellipse cx='16' cy='16' rx='12' ry='5' fill='none' stroke='%23A78BFA' stroke-width='2'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,6 +60,7 @@ html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--f-body);overflow-x:hidden}
 a{color:inherit}
 :focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:8px}
+[hidden]{display:none!important}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
 .skip{position:absolute;left:12px;top:-60px;background:var(--surface);padding:10px 14px;border-radius:8px;z-index:10}
@@ -79,6 +88,9 @@ h1 span{background:linear-gradient(100deg,var(--brand),var(--violet));-webkit-ba
 .tagline{font-size:clamp(17px,2.2vw,20px);color:var(--muted);max-width:44ch;margin:0 0 32px}
 .cta{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 22px;border-radius:999px;background:var(--ink);color:var(--bg);font:600 15px/1 var(--f-body);text-decoration:none;transition:transform .2s var(--ease)}
 .cta:hover{transform:translateY(-2px)}
+.ctas{display:flex;flex-wrap:wrap;gap:12px}
+.cta.alt{background:transparent;color:var(--ink);border:1px solid var(--line);cursor:pointer;font:600 15px/1 var(--f-body)}
+.cta.alt:hover{border-color:var(--brand)}
 .cta svg{width:18px;height:18px}
 
 /* courses */
@@ -129,6 +141,22 @@ a.card:hover .open{gap:12px}
 .card.soon h3,.card.soon .desc{color:var(--muted)}
 .badge{display:inline-flex;align-items:center;min-height:32px;padding:0 12px;border-radius:999px;border:1px solid var(--line);font:500 12px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .empty{padding:48px 0;text-align:center;color:var(--muted)}
+
+/* Get the app dialog */
+.appdlg{max-width:min(520px,calc(100vw - 32px));max-height:calc(100dvh - 32px);overflow:auto;width:100%;border:1px solid var(--line);border-radius:18px;background:var(--surface);color:var(--ink);padding:24px;box-shadow:var(--shadow-hi)}
+.appdlg::backdrop{background:rgba(5,10,20,.55)}
+.appdlg h2{font:800 24px/1.15 var(--f-display);letter-spacing:-.02em;margin:0 0 8px}
+.appdlg h3{font:600 15px/1.3 var(--f-body);margin:18px 0 6px}
+.appdlg p{margin:0 0 4px;color:var(--muted)}
+.appdlg ol{margin:0;padding-left:22px}.appdlg li{margin:4px 0}
+.appdlg .note{font-size:14px;margin-top:8px}
+.appdlg .ico{display:inline-block;padding:0 4px;border:1px solid var(--line);border-radius:6px;font-size:13px}
+.appdlg .row{display:flex;justify-content:flex-end;margin-top:20px}
+.appdlg .cta{border:0;cursor:pointer}
+.steps-os{display:flex;flex-direction:column}
+.appdlg details{margin-top:14px;border-top:1px solid var(--line);padding-top:6px}
+.appdlg summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:600}
+.appdlg summary::before{content:'▸';margin-right:8px;transition:transform .2s var(--ease)}.appdlg details[open] summary::before{transform:rotate(90deg)}
 
 /* footer */
 footer{border-top:1px solid var(--line);padding:32px 0 40px;color:var(--muted);font-size:14px}
@@ -185,8 +213,12 @@ footer .flinks{flex-basis:100%;display:flex;flex-wrap:wrap;gap:0 24px;border-top
     <p class="eyebrow"><i></i>Free · Interactive · Unofficial</p>
     <h1 id="title">AP <span>Labs</span></h1>
     <p class="tagline">Interactive, intuition-first study sites for AP sciences.</p>
-    <a class="cta" href="#courses">Browse courses
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
+    <div class="ctas">
+      <a class="cta" href="#courses">Browse courses
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
+      <button class="cta alt" id="install" type="button" hidden aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M12 7v7M9 11l3 3 3-3"/></svg>Get the app</button>
+    </div>
   </div>
 </section>
 
@@ -208,6 +240,27 @@ footer .flinks{flex-basis:100%;display:flex;flex-wrap:wrap;gap:0 24px;border-top
     <p class="sr" id="status" aria-live="polite"></p>
   </div>
 </main>
+
+<dialog class="appdlg" id="appdlg" aria-labelledby="appdlg-h">
+  <form method="dialog">
+    <h2 id="appdlg-h">Get the AP Labs app</h2>
+    <p>It's free, with no app store. It opens full screen from your home screen, and once you've opened it, it works offline too.</p>
+    <div class="steps-os" data-os="ios">
+      <h3>iPhone or iPad (Safari)</h3>
+      <ol><li>Tap the <b>Share</b> button <span class="ico" aria-hidden="true">⬆︎</span> at the bottom (or top) of Safari.</li><li>Scroll down and tap <b>Add to Home Screen</b>.</li><li>Tap <b>Add</b>.</li></ol>
+      <p class="note">On iPhone and iPad, the app keeps its own saved progress, separate from Safari.</p>
+    </div>
+    <div class="steps-os" data-os="android">
+      <h3>Android (Chrome)</h3>
+      <ol><li>Tap the <b>⋮</b> menu at the top right.</li><li>Tap <b>Install app</b> (or <b>Add to Home screen</b>).</li><li>Tap <b>Install</b>.</li></ol>
+    </div>
+    <div class="steps-os" data-os="desktop">
+      <h3>Computer (Chrome or Edge)</h3>
+      <ol><li>Click the install icon at the right end of the address bar.</li><li>Click <b>Install</b>.</li></ol>
+    </div>
+    <div class="row"><button class="cta" value="close">Got it</button></div>
+  </form>
+</dialog>
 
 <footer>
   <div class="wrap">
@@ -252,6 +305,24 @@ const issue='https://github.com/'+FEEDBACK_REPO+'/issues/new?labels='+encodeURIC
   '&title='+encodeURIComponent('[Landing page] ')+
   '&body='+encodeURIComponent('**Course:** Landing page\n**Page:** '+location.href+'\n\n**What happened, or what should change?**\n\n');
 $('#report').href=issue;$('#report2').href=issue;
+
+/* The AP Labs app (installable web app). Offline support only on the live site (and localhost for testing). */
+const isApp=matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+const swOK='serviceWorker' in navigator&&(/\.github\.io$/.test(location.hostname)||location.hostname==='localhost');
+function saveCoursesOffline(){if(!swOK)return;COURSES.filter(c=>c.status==='live').forEach(c=>{try{const u=new URL(c.url,location.href);
+  if(u.host===location.host||location.hostname==='localhost')navigator.serviceWorker.register(u.pathname+'sw.js',{scope:u.pathname}).catch(()=>{});}catch(e){}});}
+if(swOK)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});if(isApp)saveCoursesOffline();});
+addEventListener('appinstalled',()=>{saveCoursesOffline();$('#install').hidden=true;});
+{const btn=$('#install'),dlg=$('#appdlg');let prompt=null;
+  const ua=navigator.userAgent,os=/iPhone|iPad|iPod/.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1)?'ios':/Android/.test(ua)?'android':'desktop';
+  /* show this device's steps first; the others go under "Other devices" */
+  const box=dlg.querySelector('form'),mine=dlg.querySelector(`[data-os="${os}"]`),more=document.createElement('details');
+  more.innerHTML='<summary>Other devices</summary>';dlg.querySelectorAll('.steps-os').forEach(el=>{if(el!==mine)more.appendChild(el);});
+  box.insertBefore(more,box.querySelector('.row'));
+  addEventListener('beforeinstallprompt',e=>{e.preventDefault();prompt=e;});
+  btn.hidden=isApp;
+  btn.addEventListener('click',async()=>{if(prompt){prompt.prompt();try{await prompt.userChoice;}catch(e){}prompt=null;return;}
+    if(dlg.showModal)dlg.showModal();else dlg.setAttribute('open','');});}
 
 /* Theme: auto -> light -> dark, remembered in hub-theme. */
 const NAMES={auto:'Auto',light:'Light',dark:'Dark'};
