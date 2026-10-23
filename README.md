@@ -160,17 +160,17 @@ GoatCounter is free and uses no cookies, so no consent banner is needed. It send
 The landing page has one config line in `index.html`:
 
 ```js
-const GOATCOUNTER = 'aplabs';   // the part before .goatcounter.com
+const GOATCOUNTER = 'intulab';   // the part before .goatcounter.com
 ```
 
-No site loads the counter when the browser sends Do Not Track or Global Privacy Control, as the privacy policy promises. Keep that check in any new course site. The page loads the counter only on `*.github.io`, so local testing isn't counted. Your dashboard is at https://aplabs.goatcounter.com.
+No site loads the counter when the browser sends Do Not Track or Global Privacy Control, as the privacy policy promises. Keep that check in any new course site. The page loads the counter only on `*.github.io`, so local testing isn't counted. Your dashboard is at https://intulab.goatcounter.com.
 
 **Snippet for each course site.** The Mechanics site already has this pattern. Point it at the shared code:
 
 ```js
 (function analytics(){if(!/\.github\.io$/.test(location.hostname))return;window.goatcounter={no_onload:true};
   const s=document.createElement('script');s.async=true;s.src='https://gc.zgo.at/count.js';
-  s.dataset.goatcounter='https://aplabs.goatcounter.com/count';
+  s.dataset.goatcounter='https://intulab.goatcounter.com/count';
   const view=()=>{const id=(location.hash||'').slice(1)||'overview';if(window.goatcounter&&window.goatcounter.count)
     window.goatcounter.count({path:location.pathname.replace(/\/$/,'')+'/'+id,title:id});};
   s.onload=()=>{view();addEventListener('hashchange',view);};document.head.appendChild(s);})();
