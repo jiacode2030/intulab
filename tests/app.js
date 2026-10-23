@@ -1,6 +1,6 @@
 /* Checks the Intulab app (installable web app + offline support).
-   Run from ap-labs: node tests/app.js [root]
-   root = the folder holding the sibling clones ap-labs, physics-mechanics, physics-em, chemistry-lab
+   Run from intulab: node tests/app.js [root]
+   root = the folder holding the sibling clones intulab, physics-mechanics, physics-em, chemistry-lab
    (default: the parent of this repo). They are served at the same paths as on jiacode2030.github.io. */
 const path = require('path'), fs = require('fs'), http = require('http');
 const { chromium, devices } = require(require('child_process').execSync('npm root -g').toString().trim() + '/playwright');
@@ -23,17 +23,17 @@ const server = http.createServer((q, r) => {
   const b = await chromium.launch();
 
   // 1. manifest and icons
-  const man = JSON.parse(fs.readFileSync(path.join(ROOT, 'ap-labs', 'manifest.webmanifest'), 'utf8'));
-  ok(man.name === 'Intulab' && man.display === 'standalone' && man.scope === '/' && man.start_url === '/ap-labs/', 'manifest: name, standalone, scope covers the course sites');
+  const man = JSON.parse(fs.readFileSync(path.join(ROOT, 'intulab', 'manifest.webmanifest'), 'utf8'));
+  ok(man.name === 'Intulab' && man.display === 'standalone' && man.scope === '/' && man.start_url === '/intulab/', 'manifest: name, standalone, scope covers the course sites');
   for (const ic of man.icons) ok(fs.existsSync(path.join(ROOT, ic.src.replace(/^\//, ''))), 'icon exists', ic.src, ic.purpose);
   ok(man.icons.some(i => i.purpose === 'maskable'), 'has a maskable icon (Android)');
-  ok(fs.existsSync(path.join(ROOT, 'ap-labs/icons/apple-touch-icon.png')), 'has an Apple touch icon (iPhone)');
+  ok(fs.existsSync(path.join(ROOT, 'intulab/icons/apple-touch-icon.png')), 'has an Apple touch icon (iPhone)');
 
   // 2. in a normal browser: installable, Get the app button + dialog, only its own offline helper
   {
     const ctx = await b.newContext({ viewport: { width: 1280, height: 900 } }); const p = await ctx.newPage(); const errs = [];
     p.on('pageerror', e => errs.push(e.message));
-    await p.goto(BASE + '/ap-labs/'); await p.evaluate(() => navigator.serviceWorker.ready);
+    await p.goto(BASE + '/intulab/'); await p.evaluate(() => navigator.serviceWorker.ready);
     const cdp = await ctx.newCDPSession(p);
     const inst = await cdp.send('Page.getInstallabilityErrors');
     ok(inst.installabilityErrors.length === 0, 'Chrome says the app is installable', JSON.stringify(inst.installabilityErrors));
@@ -44,7 +44,7 @@ const server = http.createServer((q, r) => {
     await p.click('#appdlg .cta'); await p.waitForTimeout(150);
     ok(await p.evaluate(() => !document.querySelector('#appdlg').open), 'dialog closes');
     const scopes = await p.evaluate(() => navigator.serviceWorker.getRegistrations().then(rs => rs.map(r => new URL(r.scope).pathname)));
-    ok(JSON.stringify(scopes) === '["/ap-labs/"]', 'browser visitors only get the landing page saved', JSON.stringify(scopes));
+    ok(JSON.stringify(scopes) === '["/intulab/"]', 'browser visitors only get the landing page saved', JSON.stringify(scopes));
     for (const [site, title] of COURSES) {
       await p.goto(BASE + '/' + site + '/'); await p.waitForTimeout(500);
       ok(await p.isVisible('#app-btn'), title + ': "Get the app" button shows');
@@ -52,7 +52,7 @@ const server = http.createServer((q, r) => {
       ok(await p.evaluate(() => document.querySelector('#app-dlg').open && /Add to Home Screen/.test(document.querySelector('#app-dlg').textContent)), title + ': install steps open');
       await p.click('#app-dlg .approw button'); await p.waitForTimeout(150);
       ok(await p.evaluate(() => !document.querySelector('#app-dlg').open), title + ': steps close');
-      ok(await p.evaluate(() => document.querySelector('link[rel=manifest]').getAttribute('href') === '/ap-labs/manifest.webmanifest'), title + ': installs the same Intulab app');
+      ok(await p.evaluate(() => document.querySelector('link[rel=manifest]').getAttribute('href') === '/intulab/manifest.webmanifest'), title + ': installs the same Intulab app');
     }
     ok(!errs.length, 'no page errors', errs.join(' | '));
     await ctx.close();
@@ -64,17 +64,17 @@ const server = http.createServer((q, r) => {
     await ctx.addInitScript(() => { const mm = window.matchMedia.bind(window); window.matchMedia = q => /display-mode:\s*standalone/.test(q) ? { matches: true, media: q, addEventListener() {}, removeEventListener() {}, addListener() {}, removeListener() {} } : mm(q); });
     const p = await ctx.newPage(); const errs = [];
     p.on('pageerror', e => errs.push(e.message));
-    await p.goto(BASE + '/ap-labs/');
+    await p.goto(BASE + '/intulab/');
     ok(await p.isHidden('#install'), '"Get the app" button is hidden inside the app');
     for (const [site, title] of COURSES) { await p.goto(BASE + '/' + site + '/'); await p.waitForTimeout(400); ok(await p.isHidden('#app-btn'), title + ': button hidden inside the app'); }
-    await p.goto(BASE + '/ap-labs/');
+    await p.goto(BASE + '/intulab/');
     const active = () => p.evaluate(() => navigator.serviceWorker.getRegistrations().then(rs => rs.filter(r => r.active).map(r => new URL(r.scope).pathname).sort()));
     let scopes = [];
     for (let i = 0; i < 60 && scopes.length < COURSES.length + 1; i++) { scopes = await active(); if (scopes.length < COURSES.length + 1) await p.waitForTimeout(500); }
-    ok(JSON.stringify(scopes) === JSON.stringify(['/ap-labs/', '/calculus-lab/', '/chemistry-lab/', '/physics-em/', '/physics-mechanics/']), 'app saved the landing page and all three courses', JSON.stringify(scopes));
+    ok(JSON.stringify(scopes) === JSON.stringify(['/calculus-lab/', '/chemistry-lab/', '/intulab/', '/physics-em/', '/physics-mechanics/']), 'app saved the landing page and all three courses', JSON.stringify(scopes));
     await p.waitForTimeout(1500); // let precache finish writing
     await ctx.setOffline(true);
-    for (const [site, title] of [['ap-labs', 'Intulab'], ...COURSES]) {
+    for (const [site, title] of [['intulab', 'Intulab'], ...COURSES]) {
       const res = await p.goto(BASE + '/' + site + '/').catch(e => null);
       await p.waitForTimeout(900);
       const t = await p.title().catch(() => '');

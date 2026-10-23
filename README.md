@@ -1,12 +1,12 @@
 # Intulab
 
-Interactive, intuition-first study sites for AP sciences. This repo (`jiacode2030/ap-labs`) is the landing page at https://jiacode2030.github.io/ap-labs/, which links to each course site.
+Interactive, intuition-first study sites for AP sciences. This repo (`jiacode2030/intulab`) is the landing page at https://jiacode2030.github.io/intulab/, which links to each course site.
 
 It's plain static files with no build step:
 
 - `index.html` is the whole page (styles, script and the GoatCounter config line).
 - `courses.js` is the course list.
-- `privacy.html` and `terms.html` hold the privacy policy and terms of use for every Intulab site, styled by `legal.css`. Each course site links to them at `/ap-labs/privacy.html` and `/ap-labs/terms.html`. If you change what a site stores or which services it uses, update the privacy policy and its "Last updated" date.
+- `privacy.html` and `terms.html` hold the privacy policy and terms of use for every Intulab site, styled by `legal.css`. Each course site links to them at `/intulab/privacy.html` and `/intulab/terms.html`. If you change what a site stores or which services it uses, update the privacy policy and its "Last updated" date.
 - `tests/check.js` holds the Playwright checks.
 
 > Unofficial study aids. Not affiliated with the College Board. Use these to study, not on graded work.
@@ -44,7 +44,7 @@ Add one entry to `courses.js`. Nothing else needs to change.
   accent: '#F59E0B',                  // the page darkens it in light mode
   prefix: 'bio-',                     // the site's localStorage prefix
   progressKey: 'bio-done',            // where the site stores "marked as done"
-  label: 'course:bio'                 // label in ap-labs-feedback
+  label: 'course:bio'                 // label in intulab-feedback
 }
 ```
 
@@ -65,7 +65,7 @@ The landing page has no "Continue where you left off" strip, because the course 
 Every course site should link back to the landing page. Paste this right after the site's brand link (in Mechanics, after `<a class="brand" ...>…</a>` in the side rail). It uses the site's own `--accent`, `--line` and `--ink` colors when they exist:
 
 ```html
-<a class="morelabs" href="/ap-labs/">
+<a class="morelabs" href="/intulab/">
   <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
   More labs
 </a>
@@ -77,7 +77,7 @@ Every course site should link back to the landing page. Paste this right after t
 </style>
 ```
 
-The link is relative (`/ap-labs/`), so it works on every site under `jiacode2030.github.io`. GoatCounter already counts the landing page view, so the link needs no event of its own.
+The link is relative (`/intulab/`), so it works on every site under `jiacode2030.github.io`. GoatCounter already counts the landing page view, so the link needs no event of its own.
 
 ## Course colors
 
@@ -93,9 +93,9 @@ Each course site has its own color, so they're easy to tell apart. Pick a new on
 
 ## Deploy
 
-Push to `main`. GitHub Pages serves this repo from the root of `main` (Settings → Pages → Deploy from a branch → `main` / root) at `https://jiacode2030.github.io/ap-labs/`. `.nojekyll` keeps Pages from running Jekyll.
+Push to `main`. GitHub Pages serves this repo from the root of `main` (Settings → Pages → Deploy from a branch → `main` / root) at `https://jiacode2030.github.io/intulab/`. `.nojekyll` keeps Pages from running Jekyll.
 
-The landing page sits beside the course sites under the same origin (`jiacode2030.github.io`), so it can still read their progress. The bare `jiacode2030.github.io/` stays free for a personal page. If you'd like it to forward here instead, create a `jiacode2030.github.io` repo whose `index.html` is `<!doctype html><meta http-equiv="refresh" content="0; url=/ap-labs/">`.
+The landing page sits beside the course sites under the same origin (`jiacode2030.github.io`), so it can still read their progress. The bare `jiacode2030.github.io/` stays free for a personal page. If you'd like it to forward here instead, create a `jiacode2030.github.io` repo whose `index.html` is `<!doctype html><meta http-equiv="refresh" content="0; url=/intulab/">`.
 
 ## Checks
 
@@ -121,7 +121,7 @@ It also seeds fake progress and confirms the ring reads "12 of 32 modules done",
 
 ### Issues: one shared repo
 
-Every site reports to [`jiacode2030/ap-labs-feedback`](https://github.com/jiacode2030/ap-labs-feedback). That repo has issue forms for **Content error**, **Bug** and **Suggestion**, each with a Course dropdown. A small workflow adds the `course:*` label from the dropdown, or from the `**Course:**` line the sites pre-fill.
+Every site reports to [`jiacode2030/intulab-feedback`](https://github.com/jiacode2030/intulab-feedback). That repo has issue forms for **Content error**, **Bug** and **Suggestion**, each with a Course dropdown. A small workflow adds the `course:*` label from the dropdown, or from the `**Course:**` line the sites pre-fill.
 
 To see issues across courses, filter by label:
 
@@ -134,7 +134,7 @@ Create the labels once (Issues → Labels): `course:mechanics`, `course:em`, `co
 **Snippet for each course site.** The Mechanics site builds its issue link from `REPO` in its Report code. Replace that constant and the `issue.href=...` line with this, and change the three constants per site:
 
 ```js
-const REPO='https://github.com/jiacode2030/ap-labs-feedback';
+const REPO='https://github.com/jiacode2030/intulab-feedback';
 const COURSE='Mechanics Lab', COURSE_LABEL='course:mechanics', SITE_VERSION='2026-10-23';
 // in fallback(r):
 issue.href=REPO+'/issues/new?labels='+encodeURIComponent(COURSE_LABEL)
@@ -155,7 +155,7 @@ The values per site are:
 
 ### Analytics: GoatCounter
 
-GoatCounter is free and uses no cookies, so no consent banner is needed. It sends anonymous counts only, with no personal data. Every site reports to one GoatCounter property, so you see views per path (`/ap-labs/`, `/physics-mechanics/projectile`, `/physics-em/gauss`, ...) in one dashboard.
+GoatCounter is free and uses no cookies, so no consent banner is needed. It sends anonymous counts only, with no personal data. Every site reports to one GoatCounter property, so you see views per path (`/intulab/`, `/physics-mechanics/projectile`, `/physics-em/gauss`, ...) in one dashboard.
 
 The landing page has one config line in `index.html`:
 

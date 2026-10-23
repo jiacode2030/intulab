@@ -12,7 +12,7 @@
    accent       one hex color; the page darkens it automatically in light mode
    prefix       the site's localStorage prefix
    progressKey  the key holding "marked as done" progress: a JSON object {moduleId: 1}
-   label        the GitHub label used in jiacode2030/ap-labs-feedback
+   label        the GitHub label used in jiacode2030/intulab-feedback
 */
 window.COURSES = [
   {

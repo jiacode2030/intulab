@@ -1,9 +1,9 @@
 {
-  "id": "/ap-labs/",
+  "id": "/intulab/",
   "name": "Intulab",
   "short_name": "Intulab",
   "description": "Interactive, intuition-first study sites for AP sciences.",
-  "start_url": "/ap-labs/",
+  "start_url": "/intulab/",
   "scope": "/",
   "display": "standalone",
   "orientation": "any",
@@ -11,14 +11,14 @@
   "theme_color": "#0A1220",
   "categories": ["education"],
   "icons": [
-    { "src": "/ap-labs/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "/ap-labs/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "/ap-labs/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    { "src": "/intulab/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/intulab/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/intulab/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
   "shortcuts": [
-    { "name": "Mechanics Lab", "url": "/physics-mechanics/", "icons": [{ "src": "/ap-labs/icons/icon-192.png", "sizes": "192x192" }] },
-    { "name": "E&M Lab", "url": "/physics-em/", "icons": [{ "src": "/ap-labs/icons/icon-192.png", "sizes": "192x192" }] },
-    { "name": "Chemistry Lab", "url": "/chemistry-lab/", "icons": [{ "src": "/ap-labs/icons/icon-192.png", "sizes": "192x192" }] },
-    { "name": "Calculus Lab", "url": "/calculus-lab/", "icons": [{ "src": "/ap-labs/icons/icon-192.png", "sizes": "192x192" }] }
+    { "name": "Mechanics Lab", "url": "/physics-mechanics/", "icons": [{ "src": "/intulab/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "E&M Lab", "url": "/physics-em/", "icons": [{ "src": "/intulab/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Chemistry Lab", "url": "/chemistry-lab/", "icons": [{ "src": "/intulab/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Calculus Lab", "url": "/calculus-lab/", "icons": [{ "src": "/intulab/icons/icon-192.png", "sizes": "192x192" }] }
   ]
 }

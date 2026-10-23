@@ -87,7 +87,7 @@ const server = http.createServer((q, r) => {
   ok(after === before, 'course keys never written');
   ok(await p.evaluate(() => [...document.querySelectorAll('a.card')].every(a => a.href.startsWith('https://jiacode2030.github.io/'))), 'cards are real links');
   ok(await p.evaluate(() => document.querySelectorAll('.card.soon a').length === 0), 'coming-soon cards are not links');
-  const rep = await p.getAttribute('#report', 'href'); ok(rep.startsWith('https://github.com/jiacode2030/ap-labs-feedback/issues/new') && rep.includes('course%3Alanding'), 'report link');
+  const rep = await p.getAttribute('#report', 'href'); ok(rep.startsWith('https://github.com/jiacode2030/intulab-feedback/issues/new') && rep.includes('course%3Alanding'), 'report link');
   await p.evaluate(() => localStorage.clear()); await p.reload();
   ok(await p.$$eval('.prog', r => r.length) === 0, 'no progress data: ring hidden');
   await p.evaluate(() => localStorage.setItem('kin-done', '{"a":1,"b":0,"c":1}')); await p.reload();

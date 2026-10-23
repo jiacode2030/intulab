@@ -1,7 +1,7 @@
-/* Intulab offline support for ap-labs.
+/* Intulab offline support for intulab.
    Pages: network first (so updates show up right away), the saved copy when offline or very slow.
    Google Fonts: saved after the first download. Everything else (analytics, GitHub links) is left alone. */
-const CACHE = 'aplabs-ap-labs-v1';
+const CACHE = 'aplabs-intulab-v1';
 const PRECACHE = ["./", "./index.html", "./courses.js", "./privacy.html", "./terms.html", "./legal.css", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png", "./icons/apple-touch-icon.png", "./icons/favicon-32.png"];
 const SCOPE = new URL('./', self.location).pathname;
 
@@ -10,7 +10,7 @@ self.addEventListener('install', e => {
 });
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys()
-    .then(keys => Promise.all(keys.filter(k => k.startsWith('aplabs-ap-labs-') && k !== CACHE).map(k => caches.delete(k))))
+    .then(keys => Promise.all(keys.filter(k => k.startsWith('aplabs-intulab-') && k !== CACHE).map(k => caches.delete(k))))
     .then(() => self.clients.claim()));
 });
 
