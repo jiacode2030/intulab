@@ -1,4 +1,4 @@
-/* AP Labs offline support for ap-labs.
+/* Intulab offline support for ap-labs.
    Pages: network first (so updates show up right away), the saved copy when offline or very slow.
    Google Fonts: saved after the first download. Everything else (analytics, GitHub links) is left alone. */
 const CACHE = 'aplabs-ap-labs-v1';

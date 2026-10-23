@@ -1,4 +1,4 @@
-# AP Labs
+# Intulab
 
 Interactive, intuition-first study sites for AP sciences. This repo (`jiacode2030/ap-labs`) is the landing page at https://jiacode2030.github.io/ap-labs/, which links to each course site.
 
@@ -6,14 +6,14 @@ It's plain static files with no build step:
 
 - `index.html` is the whole page (styles, script and the GoatCounter config line).
 - `courses.js` is the course list.
-- `privacy.html` and `terms.html` hold the privacy policy and terms of use for every AP Labs site, styled by `legal.css`. Each course site links to them at `/ap-labs/privacy.html` and `/ap-labs/terms.html`. If you change what a site stores or which services it uses, update the privacy policy and its "Last updated" date.
+- `privacy.html` and `terms.html` hold the privacy policy and terms of use for every Intulab site, styled by `legal.css`. Each course site links to them at `/ap-labs/privacy.html` and `/ap-labs/terms.html`. If you change what a site stores or which services it uses, update the privacy policy and its "Last updated" date.
 - `tests/check.js` holds the Playwright checks.
 
 > Unofficial study aids. Not affiliated with the College Board. Use these to study, not on graded work.
 
-## The AP Labs app
+## The Intulab app
 
-AP Labs can be installed as an app (a Progressive Web App), with no app store involved. On iPhone it's Share → Add to Home Screen; on Android it's ⋮ → Install app. The **Get the app** button on the landing page shows these steps, or opens Chrome's install prompt directly.
+Intulab can be installed as an app (a Progressive Web App), with no app store involved. On iPhone it's Share → Add to Home Screen; on Android it's ⋮ → Install app. The **Get the app** button on the landing page shows these steps, or opens Chrome's install prompt directly.
 
 - `manifest.webmanifest` holds the app's name, colors and icons. Its `scope` is `/`, so Mechanics, E&M and Chemistry open inside the app. Every AP page links to this manifest, so "Add to Home Screen" from any of them installs the same app.
 - `icons/` holds the app icons: `any`, `maskable` (Android) and `apple-touch-icon.png` (iPhone).
@@ -67,7 +67,7 @@ Every course site should link back to the landing page. Paste this right after t
 ```html
 <a class="morelabs" href="/ap-labs/">
   <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-  More AP labs
+  More labs
 </a>
 <style>
 .morelabs{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border-radius:999px;

@@ -1,7 +1,7 @@
 {
   "id": "/ap-labs/",
-  "name": "AP Labs",
-  "short_name": "AP Labs",
+  "name": "Intulab",
+  "short_name": "Intulab",
   "description": "Interactive, intuition-first study sites for AP sciences.",
   "start_url": "/ap-labs/",
   "scope": "/",

@@ -1,4 +1,4 @@
-/* Checks the AP Labs app (installable web app + offline support).
+/* Checks the Intulab app (installable web app + offline support).
    Run from ap-labs: node tests/app.js [root]
    root = the folder holding the sibling clones ap-labs, physics-mechanics, physics-em, chemistry-lab
    (default: the parent of this repo). They are served at the same paths as on jiacode2030.github.io. */
@@ -24,7 +24,7 @@ const server = http.createServer((q, r) => {
 
   // 1. manifest and icons
   const man = JSON.parse(fs.readFileSync(path.join(ROOT, 'ap-labs', 'manifest.webmanifest'), 'utf8'));
-  ok(man.name === 'AP Labs' && man.display === 'standalone' && man.scope === '/' && man.start_url === '/ap-labs/', 'manifest: name, standalone, scope covers the course sites');
+  ok(man.name === 'Intulab' && man.display === 'standalone' && man.scope === '/' && man.start_url === '/ap-labs/', 'manifest: name, standalone, scope covers the course sites');
   for (const ic of man.icons) ok(fs.existsSync(path.join(ROOT, ic.src.replace(/^\//, ''))), 'icon exists', ic.src, ic.purpose);
   ok(man.icons.some(i => i.purpose === 'maskable'), 'has a maskable icon (Android)');
   ok(fs.existsSync(path.join(ROOT, 'ap-labs/icons/apple-touch-icon.png')), 'has an Apple touch icon (iPhone)');
@@ -52,7 +52,7 @@ const server = http.createServer((q, r) => {
       ok(await p.evaluate(() => document.querySelector('#app-dlg').open && /Add to Home Screen/.test(document.querySelector('#app-dlg').textContent)), title + ': install steps open');
       await p.click('#app-dlg .approw button'); await p.waitForTimeout(150);
       ok(await p.evaluate(() => !document.querySelector('#app-dlg').open), title + ': steps close');
-      ok(await p.evaluate(() => document.querySelector('link[rel=manifest]').getAttribute('href') === '/ap-labs/manifest.webmanifest'), title + ': installs the same AP Labs app');
+      ok(await p.evaluate(() => document.querySelector('link[rel=manifest]').getAttribute('href') === '/ap-labs/manifest.webmanifest'), title + ': installs the same Intulab app');
     }
     ok(!errs.length, 'no page errors', errs.join(' | '));
     await ctx.close();
@@ -74,7 +74,7 @@ const server = http.createServer((q, r) => {
     ok(JSON.stringify(scopes) === JSON.stringify(['/ap-labs/', '/calculus-lab/', '/chemistry-lab/', '/physics-em/', '/physics-mechanics/']), 'app saved the landing page and all three courses', JSON.stringify(scopes));
     await p.waitForTimeout(1500); // let precache finish writing
     await ctx.setOffline(true);
-    for (const [site, title] of [['ap-labs', 'AP Labs'], ...COURSES]) {
+    for (const [site, title] of [['ap-labs', 'Intulab'], ...COURSES]) {
       const res = await p.goto(BASE + '/' + site + '/').catch(e => null);
       await p.waitForTimeout(900);
       const t = await p.title().catch(() => '');
@@ -88,9 +88,9 @@ const server = http.createServer((q, r) => {
     await ctx.setOffline(false); await ctx.close();
   }
 
-  // 4. PHY 103 (Princeton Labs) is not part of the AP Labs app
+  // 4. PHY 103 (Princeton Labs) is not part of the Intulab app
   const phy = path.join(ROOT, 'phy103-lab', 'index.html');
-  if (fs.existsSync(phy)) { const h = fs.readFileSync(phy, 'utf8'); ok(!/manifest|serviceWorker/.test(h), 'PHY 103 has no AP Labs app tags'); }
+  if (fs.existsSync(phy)) { const h = fs.readFileSync(phy, 'utf8'); ok(!/manifest|serviceWorker/.test(h), 'PHY 103 has no Intulab app tags'); }
 
   await b.close(); server.close();
   console.log(fails ? `\n${fails} failed` : '\nall app checks passed'); process.exit(fails ? 1 : 0);
