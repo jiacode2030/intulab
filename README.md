@@ -79,6 +79,18 @@ Every course site should link back to the landing page. Paste this right after t
 
 The link is relative (`/ap-labs/`), so it works on every site under `jiacode2030.github.io`. GoatCounter already counts the landing page view, so the link needs no event of its own.
 
+## Course colors
+
+Each course site has its own color, so they're easy to tell apart. Pick a new one for each new course:
+
+| Course | Color |
+|---|---|
+| Mechanics Lab | sky blue `#5CB8FF` |
+| E&M Lab | violet `#A78BFA` |
+| Chemistry Lab | sage green `#3DD6A3` |
+| Calculus Lab | ocean aqua `#5FD0DA` (site theme: aqua) |
+| Biology Lab (coming) | shell and amber |
+
 ## Deploy
 
 Push to `main`. GitHub Pages serves this repo from the root of `main` (Settings → Pages → Deploy from a branch → `main` / root) at `https://jiacode2030.github.io/ap-labs/`. `.nojekyll` keeps Pages from running Jekyll.

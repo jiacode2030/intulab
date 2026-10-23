@@ -70,7 +70,7 @@ window.COURSES = [
     topics: ['Limits', 'Derivatives', 'Integrals', 'Differential equations', 'Series (BC)'],
     url: 'https://jiacode2030.github.io/calculus-lab/',
     status: 'live',
-    accent: '#F2B84B',
+    accent: '#5FD0DA',
     prefix: 'calc-',
     progressKey: 'calc-done',
     label: 'course:calc'
