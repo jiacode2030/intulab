@@ -23,7 +23,7 @@ const server = http.createServer((q, r) => {
   ok(size < 150 * 1024, `page size ${(size / 1024).toFixed(1)} KB < 150 KB`);
 
   const SEED = { 'kin-done': JSON.stringify(Object.fromEntries(['deriv','integ','products','diffeq','graphs','constant','variable','vectors','projectile','relative','forces','friction'].map(k => [k, 1]))),
-                 'eml-done': '{not json', 'chem-done': '{"mole":1,"units":1,"pes":1}' };
+                 'eml-done': '{not json', 'chem-done': '{"mole":1,"units":1,"pes":1}', 'calc-done': '{"limits":1,"deriv":1}' };
 
   for (const scheme of ['light', 'dark']) for (const w of [360, 768, 1280]) {
     const ctx = await b.newContext({ viewport: { width: w, height: 900 }, colorScheme: scheme });
@@ -43,6 +43,7 @@ const server = http.createServer((q, r) => {
     ok(await p.evaluate(() => !!document.querySelector('a.card[data-id="mechanics"] .ring .val')), tag, 'ring drawn');
     ok(await p.evaluate(() => document.querySelectorAll('.card.soon .prog').length === 0), tag, 'no ring on coming-soon cards');
     ok((await p.evaluate(() => { const a = document.querySelector('a.card[data-id="chem"] .prog'); return a && a.textContent.trim(); })) === '3 of 44 modules done', tag, 'chemistry ring');
+    ok((await p.evaluate(() => { const a = document.querySelector('a.card[data-id="calc"] .prog'); return a && a.textContent.trim(); })) === '2 of 50 modules done', tag, 'calculus ring');
     ok(await p.evaluate(() => !document.querySelector('a.card[data-id="em"] .prog')), tag, 'unreadable E&M data: ring hidden');
     const small = await p.evaluate(() => [...document.querySelectorAll('a,button,input')].filter(e => e.offsetParent && !e.classList.contains('skip'))
       .map(e => { const r = e.getBoundingClientRect(); return [e.id || e.className || e.textContent.trim().slice(0, 20), r.width, r.height]; })
@@ -63,7 +64,7 @@ const server = http.createServer((q, r) => {
       ok(!low.length, tag, 'text contrast >= 4.5:1', low.join(' '));
       const dup = await p.evaluate(() => { const s = {}; return [...document.querySelectorAll('[id]')].map(e => e.id.toLowerCase()).filter(i => s[i] ? 1 : (s[i] = 1, 0)); });
       ok(!dup.length, tag, 'no ids that differ only by case', dup.join(','));
-      ok(JSON.stringify(await p.evaluate(() => [...document.querySelectorAll('h1,h2,h3')].filter(h => !h.closest('dialog')).map(h => h.tagName))) === JSON.stringify(['H1', 'H2', 'H3', 'H3', 'H3']), tag, 'heading order');
+      ok(JSON.stringify(await p.evaluate(() => [...document.querySelectorAll('h1,h2,h3')].filter(h => !h.closest('dialog')).map(h => h.tagName))) === JSON.stringify(['H1', 'H2', 'H3', 'H3', 'H3', 'H3']), tag, 'heading order');
     }
     ok(!errs.length, tag, 'no console errors', errs.join(' | '));
     await p.screenshot({ path: path.join(OUT, `${scheme}-${w}.png`), fullPage: true });
@@ -75,7 +76,7 @@ const server = http.createServer((q, r) => {
   await p.goto(URL); await p.evaluate(s => { for (const k in s) localStorage.setItem(k, s[k]); }, SEED); await p.reload();
   const snap = () => p.evaluate(() => JSON.stringify(Object.keys(localStorage).filter(k => k !== 'hub-theme').sort().map(k => [k, localStorage.getItem(k)])));
   const before = await snap();
-  ok(JSON.stringify(await p.$$eval('.chip', c => c.map(x => x.textContent))) === '["All","Physics","Chemistry"]', 'only subjects that have a course');
+  ok(JSON.stringify(await p.$$eval('.chip', c => c.map(x => x.textContent))) === '["All","Physics","Chemistry","Math"]', 'only subjects that have a course');
   await p.click('.chip:text("Chemistry")'); ok(await p.$$eval('.card', c => c.length) === 1, 'Chemistry filter');
   await p.click('.chip:text("All")'); await p.fill('#q', 'induction'); ok(await p.$$eval('.card h3', c => c.map(x => x.textContent).join()) === 'E&M Lab', 'search by topic');
   await p.fill('#q', 'zzzz'); ok(await p.isVisible('#empty'), 'empty state');

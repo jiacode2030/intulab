@@ -59,5 +59,20 @@ window.COURSES = [
     prefix: 'chem-',
     progressKey: 'chem-done',
     label: 'course:chem'
+  },
+  {
+    id: 'calc',
+    title: 'Calculus Lab',
+    course: 'AP Calculus AB and BC',
+    subject: 'Math',
+    description: 'Graphs you can drag and zoom, worked examples and randomized practice with exact answers, for AB or BC.',
+    modules: 50,
+    topics: ['Limits', 'Derivatives', 'Integrals', 'Differential equations', 'Series (BC)'],
+    url: 'https://jiacode2030.github.io/calculus-lab/',
+    status: 'live',
+    accent: '#F2B84B',
+    prefix: 'calc-',
+    progressKey: 'calc-done',
+    label: 'course:calc'
   }
 ];

@@ -137,6 +137,7 @@ The values per site are:
 | Mechanics | `Mechanics Lab` | `course:mechanics` |
 | E&M | `E&M Lab` | `course:em` |
 | Chemistry | `Chemistry Lab` | `course:chem` |
+| Calculus | `Calculus Lab` | `course:calc` |
 
 (GitHub applies the `labels=` URL parameter only for people with triage access. For everyone else, the workflow labels the issue from the `**Course:**` line.)
 

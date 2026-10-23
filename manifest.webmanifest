@@ -18,6 +18,7 @@
   "shortcuts": [
     { "name": "Mechanics Lab", "url": "/physics-mechanics/", "icons": [{ "src": "/ap-labs/icons/icon-192.png", "sizes": "192x192" }] },
     { "name": "E&M Lab", "url": "/physics-em/", "icons": [{ "src": "/ap-labs/icons/icon-192.png", "sizes": "192x192" }] },
-    { "name": "Chemistry Lab", "url": "/chemistry-lab/", "icons": [{ "src": "/ap-labs/icons/icon-192.png", "sizes": "192x192" }] }
+    { "name": "Chemistry Lab", "url": "/chemistry-lab/", "icons": [{ "src": "/ap-labs/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Calculus Lab", "url": "/calculus-lab/", "icons": [{ "src": "/ap-labs/icons/icon-192.png", "sizes": "192x192" }] }
   ]
 }
