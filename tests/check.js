@@ -23,7 +23,7 @@ const server = http.createServer((q, r) => {
   ok(size < 150 * 1024, `page size ${(size / 1024).toFixed(1)} KB < 150 KB`);
 
   const SEED = { 'kin-done': JSON.stringify(Object.fromEntries(['deriv','integ','products','diffeq','graphs','constant','variable','vectors','projectile','relative','forces','friction'].map(k => [k, 1]))),
-                 'eml-done': '{not json', 'kin-theme': '"dark"' };
+                 'eml-done': '{not json', 'chem-done': '{"mole":1,"units":1,"pes":1}' };
 
   for (const scheme of ['light', 'dark']) for (const w of [360, 768, 1280]) {
     const ctx = await b.newContext({ viewport: { width: w, height: 900 }, colorScheme: scheme });
@@ -42,6 +42,8 @@ const server = http.createServer((q, r) => {
     ok(ring === '12 of 32 modules done', tag, 'mechanics ring:', ring);
     ok(await p.evaluate(() => !!document.querySelector('a.card[data-id="mechanics"] .ring .val')), tag, 'ring drawn');
     ok(await p.evaluate(() => document.querySelectorAll('.card.soon .prog').length === 0), tag, 'no ring on coming-soon cards');
+    ok((await p.evaluate(() => { const a = document.querySelector('a.card[data-id="chem"] .prog'); return a && a.textContent.trim(); })) === '3 of 44 modules done', tag, 'chemistry ring');
+    ok(await p.evaluate(() => !document.querySelector('a.card[data-id="em"] .prog')), tag, 'unreadable E&M data: ring hidden');
     const small = await p.evaluate(() => [...document.querySelectorAll('a,button,input')].filter(e => e.offsetParent && !e.classList.contains('skip'))
       .map(e => { const r = e.getBoundingClientRect(); return [e.id || e.className || e.textContent.trim().slice(0, 20), r.width, r.height]; })
       .filter(([, W, H]) => W < 44 || H < 44));
