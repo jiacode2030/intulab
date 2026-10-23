@@ -1,4 +1,4 @@
-# AP Science Labs
+# AP Labs
 
 Interactive, intuition-first study sites for AP sciences. This repo (`jiacode2030/ap-labs`) is the landing page at https://jiacode2030.github.io/ap-labs/, which links to each course site.
 
