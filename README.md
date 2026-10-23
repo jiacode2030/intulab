@@ -6,6 +6,7 @@ It's plain static files with no build step:
 
 - `index.html` is the whole page (styles, script and the GoatCounter config line).
 - `courses.js` is the course list.
+- `privacy.html` and `terms.html` hold the privacy policy and terms of use for every AP Labs site, styled by `legal.css`. Each course site links to them at `/ap-labs/privacy.html` and `/ap-labs/terms.html`. If you change what a site stores or which services it uses, update the privacy policy and its "Last updated" date.
 - `tests/check.js` holds the Playwright checks.
 
 > Unofficial study aids. Not affiliated with the College Board. Use these to study, not on graded work.
@@ -134,7 +135,7 @@ The landing page has one config line in `index.html`:
 const GOATCOUNTER = 'aplabs';   // the part before .goatcounter.com
 ```
 
-The page loads the counter only on `*.github.io`, so local testing isn't counted. Your dashboard is at https://aplabs.goatcounter.com.
+No site loads the counter when the browser sends Do Not Track or Global Privacy Control, as the privacy policy promises. Keep that check in any new course site. The page loads the counter only on `*.github.io`, so local testing isn't counted. Your dashboard is at https://aplabs.goatcounter.com.
 
 **Snippet for each course site.** The Mechanics site already has this pattern. Point it at the shared code:
 

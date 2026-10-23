@@ -93,6 +93,19 @@ const server = http.createServer((q, r) => {
   await p.evaluate(() => localStorage.setItem('kin-done', '"broken"')); await p.reload();
   ok(await p.$$eval('.prog', r => r.length) === 0, 'bad data: ring hidden');
 
+  /* legal pages: load cleanly, link back, no overflow, footer links on the landing page */
+  for (const f of ['privacy.html', 'terms.html']) for (const w of [360, 1280]) {
+    const q = await b.newPage({ viewport: { width: w, height: 800 }, colorScheme: 'dark' }); const e2 = [];
+    q.on('pageerror', e => e2.push(e.message));
+    await q.goto(URL + f);
+    ok(!(await q.evaluate(() => document.documentElement.scrollWidth > innerWidth)), f, w, 'no horizontal scroll');
+    ok(await q.evaluate(() => /Last updated/.test(document.body.innerText) && !!document.querySelector('.brand svg') && !!document.querySelector('a[href="./"]')), f, w, 'logo, last updated, link home');
+    ok(!e2.length, f, w, 'no page errors', e2.join(' | '));
+    await q.close();
+  }
+  await p.goto(URL);
+  ok(JSON.stringify(await p.$$eval('footer .flinks a', a => a.map(x => x.getAttribute('href').replace(/^http.*/, 'github')))) === '["privacy.html","terms.html","github"]', 'footer links: privacy, terms, report');
+  ok(await p.evaluate(() => /Created by JL/.test(document.querySelector('footer').innerText) && /© 2026 JL/.test(document.querySelector('footer').innerText) && /Last updated/.test(document.querySelector('footer').innerText)), 'footer: credit, copyright, last updated');
   await b.close(); server.close();
   console.log(fails ? `\n${fails} failed` : '\nall checks passed'); process.exit(fails ? 1 : 0);
 })();

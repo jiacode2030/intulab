@@ -135,6 +135,15 @@ footer{border-top:1px solid var(--line);padding:32px 0 40px;color:var(--muted);f
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px 32px}
 footer p{margin:0 0 4px}
 footer a{min-height:44px;display:inline-flex;align-items:center}
+footer .fcol{flex:1 1 300px;max-width:520px}
+footer .credit{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;color:var(--ink);font-size:15px;margin-bottom:8px}
+footer .tm{margin-top:10px;font-size:13px}
+.li-link{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px 0 10px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink);font:600 13px var(--f-body);text-decoration:none;transition:border-color .2s var(--ease),color .2s var(--ease)}
+.li-link svg{width:15px;height:15px;fill:#0A66C2}
+:root[data-theme="dark"] .li-link svg{fill:#70B5F9}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .li-link svg{fill:#70B5F9}}
+.li-link:hover{border-color:#0A66C2}
+footer .flinks{flex-basis:100%;display:flex;flex-wrap:wrap;gap:0 24px;border-top:1px solid var(--line);padding-top:8px}
 
 @media (max-width:560px){
   .wrap{padding:0 16px}
@@ -202,12 +211,20 @@ footer a{min-height:44px;display:inline-flex;align-items:center}
 
 <footer>
   <div class="wrap">
-    <div>
+    <div class="fcol">
+      <p class="credit"><span>Created by <b>JL</b> · Princeton Class of 2030 · a student project</span><a class="li-link" href="https://www.linkedin.com/in/jiarui-li2030" target="_blank" rel="noopener" aria-label="JL on LinkedIn (opens in a new tab)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.06c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.77 2.65 4.77 6.1V21h-4v-5.1c0-1.22-.02-2.78-1.7-2.78-1.7 0-1.96 1.33-1.96 2.7V21h-4z"/></svg>LinkedIn</a></p>
+      <p>© 2026 JL. All rights reserved.</p>
+      <p>Last updated October 23, 2026</p>
+    </div>
+    <div class="fcol">
       <p>Unofficial study aids. Not affiliated with the College Board.</p>
       <p>Use these to study, not on graded work.</p>
       <p>Anonymous, cookie-free page-view counts only.</p>
+      <p class="tm">AP® and Advanced Placement® are trademarks registered by the College Board, which is not affiliated with, and does not endorse, these sites.</p>
     </div>
-    <div><a id="report2" href="#" target="_blank" rel="noopener">Report an issue<span class="sr"> (opens GitHub in a new tab)</span></a></div>
+    <nav class="flinks" aria-label="Legal and feedback">
+      <a href="privacy.html">Privacy policy</a><a href="terms.html">Terms of use</a><a id="report2" href="#" target="_blank" rel="noopener">Report an issue<span class="sr"> (opens GitHub in a new tab)</span></a>
+    </nav>
   </div>
 </footer>
 
@@ -224,7 +241,9 @@ const COURSES=Array.isArray(window.COURSES)?window.COURSES:[];
 const REDUCE=matchMedia('(prefers-reduced-motion: reduce)');
 
 /* GoatCounter: anonymous, cookie-free. Loads only on the live site and only once a real code is set. */
-const gcOn=/\.github\.io$/.test(location.hostname)&&GOATCOUNTER&&GOATCOUNTER!=='YOUR-CODE';
+/* honor Do Not Track and Global Privacy Control: no counter at all */
+const optOut=navigator.doNotTrack==='1'||window.doNotTrack==='1'||navigator.globalPrivacyControl===true;
+const gcOn=!optOut&&/\.github\.io$/.test(location.hostname)&&GOATCOUNTER&&GOATCOUNTER!=='YOUR-CODE';
 if(gcOn){const s=document.createElement('script');s.async=true;s.src='https://gc.zgo.at/count.js';s.dataset.goatcounter='https://'+GOATCOUNTER+'.goatcounter.com/count';document.head.appendChild(s);}
 function event(name){try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:name,title:name,event:true});}catch(e){}}
 
