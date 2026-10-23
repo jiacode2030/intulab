@@ -93,6 +93,37 @@ h1 span{background:linear-gradient(100deg,var(--brand),var(--violet));-webkit-ba
 .cta.alt:hover{border-color:var(--brand)}
 .cta svg{width:18px;height:18px}
 
+/* hero extras: shimmering title, rotating course line, stats */
+h1 span{background-size:200% 100%;animation:shimmer 9s ease-in-out infinite alternate}
+@keyframes shimmer{from{background-position:0% 50%}to{background-position:100% 50%}}
+h1 span{background-image:linear-gradient(100deg,var(--brand),var(--violet),var(--brand))}
+.tagline .rot{display:block;height:1.5em;overflow:hidden;font:700 clamp(20px,2.6vw,26px)/1.5 var(--f-display);letter-spacing:-.01em;margin-top:4px}
+.tagline .rot b{display:block;font-weight:700;color:var(--rotc,var(--brand));transition:transform .45s var(--ease),opacity .45s var(--ease)}
+.tagline .rot b.out{transform:translateY(-100%);opacity:0}
+.tagline .rot b.in{transform:translateY(100%);opacity:0}
+.eyebrow i{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 7px transparent}}
+.stats{list-style:none;display:flex;flex-wrap:wrap;gap:12px;margin:36px 0 0;padding:0}
+.stats li{display:flex;flex-direction:column;gap:2px;min-width:112px;padding:12px 16px;border:1px solid var(--line);border-radius:14px;background:color-mix(in srgb,var(--surface) 72%,transparent);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.stats b{font:800 24px/1.1 var(--f-display);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stats span{font-size:13px;color:var(--muted)}
+.hint{margin:16px 0 0;font:500 12px var(--f-mono);letter-spacing:.04em;color:var(--muted)}
+@media (hover:none){.hint{display:none}}
+
+/* how it works */
+.how{margin-top:72px}
+.how h2{margin-bottom:20px}
+.how3{list-style:none;margin:0;padding:0;display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
+.how3 li{padding:20px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+.how3 h3{font-size:19px;margin:12px 0 6px}
+.how3 p{margin:0;color:var(--muted)}
+.hico{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;color:var(--brand);background:var(--hero-a)}
+.hico svg{width:24px;height:24px}
+
+/* scroll reveal (only when motion is allowed; see the script) */
+.js-motion .rv{opacity:0;transform:translateY(18px);transition:opacity .6s var(--ease),transform .6s var(--ease);transition-delay:calc(var(--i,0)*70ms)}
+.js-motion .rv.in{opacity:1;transform:none}
+
 /* courses */
 main{position:relative;z-index:1;padding-bottom:72px}
 .head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:16px 24px;margin-bottom:24px}
@@ -112,7 +143,17 @@ h2{font:800 clamp(26px,3.4vw,34px)/1.1 var(--f-display);letter-spacing:-.025em;m
 .card{--a:color-mix(in oklab,var(--accent) var(--mix),var(--mix-to));position:relative;display:flex;flex-direction:column;height:100%;padding:24px;border-radius:18px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);text-decoration:none;color:inherit;overflow:hidden;
   transition:transform .28s var(--ease),box-shadow .28s var(--ease),border-color .28s var(--ease)}
 .card::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--accent)}
-a.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hi);border-color:color-mix(in oklab,var(--accent) 55%,var(--line))}
+a.card:hover{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(-4px);box-shadow:var(--shadow-hi);border-color:color-mix(in oklab,var(--accent) 55%,var(--line))}
+.card::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s var(--ease);
+  background:radial-gradient(320px circle at var(--mx,50%) var(--my,0%),color-mix(in oklab,var(--accent) 16%,transparent),transparent 65%)}
+a.card:hover::after{opacity:1}
+.card>*{position:relative;z-index:1}
+a.card:hover .icon[data-s="Physics"] svg{animation:spin 6s linear infinite}
+a.card:hover .icon[data-s="Chemistry"] svg{animation:swirl 1.2s ease-in-out infinite}
+a.card:hover .icon[data-s="Math"] svg path:first-child{stroke-dasharray:1;animation:draw 1.4s var(--ease) both}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes swirl{0%,100%{transform:rotate(0)}25%{transform:rotate(-12deg)}75%{transform:rotate(12deg)}}
+@keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
 a.card:focus-visible{outline-offset:4px;border-radius:18px}
 .card .row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px}
 .icon{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;color:var(--a);background:color-mix(in oklab,var(--accent) 14%,transparent);flex:none}
@@ -181,6 +222,9 @@ footer .flinks{flex-basis:100%;display:flex;flex-wrap:wrap;gap:0 24px;border-top
   .card{padding:20px}
 }
 @media (prefers-reduced-motion:reduce){
+  h1 span,.eyebrow i{animation:none}
+  a.card:hover{transform:translateY(-4px)}
+  a.card:hover .icon svg,a.card:hover .icon svg path{animation:none!important}
   *,*::before,*::after{transition:none!important;animation:none!important}
 }
 </style>
@@ -212,13 +256,20 @@ footer .flinks{flex-basis:100%;display:flex;flex-wrap:wrap;gap:0 24px;border-top
   <div class="wrap">
     <p class="eyebrow"><i></i>Free · Interactive · Unofficial</p>
     <h1 id="title">AP <span>Labs</span></h1>
-    <p class="tagline">Interactive, intuition-first study sites for AP sciences.</p>
+    <p class="tagline">Interactive, intuition-first study sites for <span class="sr">AP sciences.</span><span class="rot" id="rot" aria-hidden="true"><b>AP sciences</b></span></p>
     <div class="ctas">
       <a class="cta" href="#courses">Browse courses
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
       <button class="cta alt" id="install" type="button" hidden aria-haspopup="dialog">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M12 7v7M9 11l3 3 3-3"/></svg>Get the app</button>
     </div>
+    <ul class="stats" id="stats" aria-label="At a glance">
+      <li><b data-count="courses">4</b><span>courses</span></li>
+      <li><b data-count="modules">149</b><span>modules</span></li>
+      <li><b>Free</b><span>no sign-up</span></li>
+      <li><b>Offline</b><span>as an app</span></li>
+    </ul>
+    <p class="hint" aria-hidden="true">Move your pointer over the field, or tap it.</p>
   </div>
 </section>
 
@@ -238,6 +289,18 @@ footer .flinks{flex-basis:100%;display:flex;flex-wrap:wrap;gap:0 24px;border-top
     <ul class="grid" id="grid"></ul>
     <p class="empty" id="empty" hidden>No courses match. Try another subject or search.</p>
     <p class="sr" id="status" aria-live="polite"></p>
+
+    <section class="how" aria-labelledby="how-h">
+      <h2 id="how-h">How every lab works</h2>
+      <ol class="how3">
+        <li class="rv"><span class="hico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18c4 0 5-12 9-12s5 12 9 12"/><circle cx="12" cy="6" r="2" fill="currentColor"/></svg></span>
+          <h3>See it move</h3><p>Every idea starts as a live simulation or graph you can drag, before any formulas.</p></li>
+        <li class="rv"><span class="hico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6M12 17h.01"/></svg></span>
+          <h3>Predict, then check</h3><p>Guess what will happen, run it, and see why. Worked examples go one step at a time.</p></li>
+        <li class="rv"><span class="hico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></span>
+          <h3>Practice until it sticks</h3><p>Randomized problems, an exam builder and a mistakes queue that brings back what you missed.</p></li>
+      </ol>
+    </section>
   </div>
 </main>
 
@@ -289,9 +352,11 @@ const FEEDBACK_REPO = 'jiacode2030/ap-labs-feedback';
 
 (function(){
 'use strict';
-const $=s=>document.querySelector(s);
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const COURSES=Array.isArray(window.COURSES)?window.COURSES:[];
 const REDUCE=matchMedia('(prefers-reduced-motion: reduce)');
+const FINE=matchMedia('(hover: hover) and (pointer: fine)');
+if(!REDUCE.matches&&'IntersectionObserver' in window)document.documentElement.classList.add('js-motion');
 
 /* GoatCounter: anonymous, cookie-free. Loads only on the live site and only once a real code is set. */
 /* honor Do Not Track and Global Privacy Control: no counter at all */
@@ -351,7 +416,7 @@ const ICONS={
   Physics:P+'<circle cx="12" cy="12" r="1.8" fill="currentColor"/><ellipse cx="12" cy="12" rx="10" ry="4"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/></svg>',
   Chemistry:P+'<path d="M9 3h6M10 3v6L4.5 18.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3"/><path d="M7 15h10"/><circle cx="10" cy="18" r=".6" fill="currentColor"/><circle cx="14" cy="17.5" r=".6" fill="currentColor"/></svg>',
   Biology:P+'<path d="M7 3c0 6 10 6 10 12s-10 3-10 6M17 3c0 6-10 6-10 12s10 3 10 6"/><path d="M8.5 6h7M8.5 18h7M10 9.5h4M10 14.5h4"/></svg>',
-  Math:P+'<path d="M4 20c2.5 0 3-16 6-16s2.5 12 5 12 2-6 5-6"/><path d="M3 20h18"/></svg>',
+  Math:P+'<path pathLength="1" d="M4 20c2.5 0 3-16 6-16s2.5 12 5 12 2-6 5-6"/><path d="M3 20h18"/></svg>',
   Science:P+'<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>'
 };
 const ARROW='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
@@ -362,7 +427,7 @@ const safeUrl=u=>/^https?:\/\//i.test(u||'')||/^\.?\//.test(u||'')?u:'#';
 function ring(p){
   const R=16,C=2*Math.PI*R,f=p.total?p.done/p.total:0;
   const label=p.total?`${p.done} of ${p.total} modules done`:`${p.done} module${p.done===1?'':'s'} done`;
-  const svg=p.total?`<svg class="ring" viewBox="0 0 40 40" aria-hidden="true"><circle class="track" cx="20" cy="20" r="${R}"/><circle class="val" cx="20" cy="20" r="${R}" stroke-dasharray="${C.toFixed(2)}" stroke-dashoffset="${(C*(1-f)).toFixed(2)}"/></svg>`:'';
+  const svg=p.total?`<svg class="ring" viewBox="0 0 40 40" aria-hidden="true"><circle class="track" cx="20" cy="20" r="${R}"/><circle class="val" cx="20" cy="20" r="${R}" stroke-dasharray="${C.toFixed(2)}" stroke-dashoffset="${C.toFixed(2)}" data-to="${(C*(1-f)).toFixed(2)}"/></svg>`:'';
   return `<span class="prog">${svg}<span><b>${p.done}</b>${esc(label.slice(String(p.done).length))}</span></span>`;
 }
 
@@ -373,13 +438,13 @@ function card(c){
   const p=live?progress(c):null;
   const left=live?(p?ring(p):(Number.isFinite(c.modules)?`<span class="meta">${c.modules} modules</span>`:'<span></span>')):'<span class="badge">Coming soon</span>';
   const right=live?`<span class="open" aria-hidden="true">Open${ARROW}</span>`:'';
-  const inner=`<div class="row"><span class="icon">${icon}</span><span class="subj">${esc(c.subject)}</span></div>
+  const inner=`<div class="row"><span class="icon" data-s="${esc(c.subject)}">${icon}</span><span class="subj">${esc(c.subject)}</span></div>
     <h3>${esc(c.title)}</h3><p class="course">${esc(c.course)}</p><p class="desc">${esc(c.description)}</p>
     <ul class="topics" aria-label="Topics">${topics}</ul><div class="foot">${left}${right}</div>`;
   const style=`style="--accent:${safeColor(c.accent)}"`;
   return live
-    ? `<li><a class="card" href="${esc(safeUrl(c.url))}" data-id="${esc(c.id)}" ${style}>${inner}</a></li>`
-    : `<li><div class="card soon" aria-disabled="true" ${style}>${inner}</div></li>`;
+    ? `<li class="rv"><a class="card" href="${esc(safeUrl(c.url))}" data-id="${esc(c.id)}" ${style}>${inner}</a></li>`
+    : `<li class="rv"><div class="card soon" aria-disabled="true" ${style}>${inner}</div></li>`;
 }
 
 /* Filters: only subjects that have at least one course. */
@@ -397,7 +462,15 @@ function render(){
     (!q||[c.title,c.course,c.subject,c.description,...(c.topics||[])].join(' ').toLowerCase().includes(q)));
   /* live courses first, then coming soon, keeping file order */
   list.sort((a,b)=>(a.status==='live'?0:1)-(b.status==='live'?0:1));
-  $('#grid').innerHTML=list.map(card).join('');
+  const grid=$('#grid'),before=new Map($$('#grid a.card,#grid .card').map(el=>[el.dataset.id||el.querySelector('h3').textContent,el.getBoundingClientRect()]));
+  grid.innerHTML=list.map(card).join('');
+  $$('#grid > li').forEach((li,i)=>li.style.setProperty('--i',Math.min(i,8)));
+  /* rings fill from empty */
+  requestAnimationFrame(()=>requestAnimationFrame(()=>$$('#grid .ring .val').forEach(v=>v.style.strokeDashoffset=v.dataset.to)));
+  if(motion()&&before.size){$$('#grid > li').forEach(li=>{li.classList.add('in');const el=li.firstElementChild,k=el.dataset.id||el.querySelector('h3').textContent,r0=before.get(k),r1=el.getBoundingClientRect();
+    if(r0)li.animate([{transform:`translate(${r0.left-r1.left}px,${r0.top-r1.top}px)`},{transform:'none'}],{duration:420,easing:'cubic-bezier(.2,.8,.2,1)'});
+    else li.animate([{opacity:0,transform:'scale(.96)'},{opacity:1,transform:'none'}],{duration:320,easing:'ease-out'});});}
+  else reveal();
   $('#empty').hidden=list.length>0;
   $('#status').textContent=list.length+' course'+(list.length===1?'':'s')+' shown';
 }
@@ -408,22 +481,66 @@ render();
 addEventListener('storage',e=>{if(!e.key||COURSES.some(c=>c.progressKey===e.key))render();});
 addEventListener('pageshow',e=>{if(e.persisted)render();});
 
-/* Hero background: slow drifting charges with faint field lines between near neighbours. */
+/* ---------- motion helpers ---------- */
+function motion(){return !REDUCE.matches;}
+var revealObs=null;
+function reveal(){if(!document.documentElement.classList.contains('js-motion')){$$('.rv').forEach(el=>el.classList.add('in'));return;}
+  revealObs=revealObs||new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');revealObs.unobserve(e.target);}}),{rootMargin:'0px 0px -8% 0px'});
+  $$('.rv:not(.in)').forEach(el=>revealObs.observe(el));}
+$$('.how3 > li').forEach((li,i)=>li.style.setProperty('--i',i));
+reveal();
+
+/* rotating course line under the tagline */
+{const rot=$('#rot');const seen=new Set();const words=COURSES.filter(c=>c.status==='live').map(c=>({t:String(c.course||c.title).split(':')[0].trim(),c:safeColor(c.accent)})).filter(w=>!seen.has(w.t)&&seen.add(w.t));
+  let k=0;const show=(w,anim)=>{const b=document.createElement('b');b.textContent=w.t;rot.style.setProperty('--rotc',`color-mix(in oklab,${w.c} var(--mix),var(--mix-to))`);
+    if(!anim){rot.replaceChildren(b);return;}const old=rot.firstElementChild;b.className='in';rot.appendChild(b);rot.style.position='relative';b.style.position='absolute';b.style.left='0';b.style.top='0';
+    requestAnimationFrame(()=>{old&&old.classList.add('out');b.classList.remove('in');});setTimeout(()=>{old&&old.remove();b.style.position='';},480);};
+  if(words.length){show(words[0],false);if(motion()&&words.length>1)setInterval(()=>{if(document.hidden)return;k=(k+1)%words.length;show(words[k],true);},2600);}}
+
+/* stats: count up when they come into view */
+{const live=COURSES.filter(c=>c.status==='live');const vals={courses:live.length,modules:live.reduce((n,c)=>n+(Number.isFinite(c.modules)?c.modules:0),0)};
+  const els=$$('#stats [data-count]');els.forEach(el=>el.textContent=vals[el.dataset.count]);
+  if(motion()&&'IntersectionObserver' in window){const io=new IntersectionObserver(es=>{if(!es[0].isIntersecting)return;io.disconnect();
+    els.forEach(el=>{const to=vals[el.dataset.count],t0=performance.now(),d=900;const tick=t=>{const f=Math.min(1,(t-t0)/d),e=1-Math.pow(1-f,3);el.textContent=Math.round(to*e);if(f<1)requestAnimationFrame(tick);};el.textContent='0';requestAnimationFrame(tick);});});io.observe($('#stats'));}}
+
+/* course cards: gentle 3D tilt and a spotlight that follows the pointer (mouse and trackpad only) */
+$('#grid').addEventListener('pointermove',e=>{if(!FINE.matches||!motion())return;const c=e.target.closest('a.card');if(!c)return;const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+  c.style.setProperty('--mx',(x*100).toFixed(1)+'%');c.style.setProperty('--my',(y*100).toFixed(1)+'%');c.style.setProperty('--ry',((x-.5)*6).toFixed(2)+'deg');c.style.setProperty('--rx',((.5-y)*6).toFixed(2)+'deg');});
+$('#grid').addEventListener('pointerout',e=>{const c=e.target.closest('a.card');if(c&&!c.contains(e.relatedTarget)){c.style.removeProperty('--rx');c.style.removeProperty('--ry');}});
+
+/* Hero background: drifting charges with field lines. Your pointer acts like a charge: + dots lean toward it,
+   - dots away, and field lines reach out to it. Tap or click to send a ripple through the field. */
 const field=(function(){
-  const cv=$('#field'),ctx=cv.getContext('2d');let W=0,H=0,dpr=1,pts=[],rgb='124,180,255',raf=0,visible=true;
+  const cv=$('#field'),ctx=cv.getContext('2d'),hero=cv.parentElement;let W=0,H=0,dpr=1,pts=[],rgb='124,180,255',raf=0,visible=true;
+  const ptr={x:0,y:0,on:false},ripples=[];
   function recolor(){rgb=getComputedStyle(document.documentElement).getPropertyValue('--dot').trim()||rgb;if(REDUCE.matches||!raf)draw();}
   function size(){const r=cv.getBoundingClientRect();dpr=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);
     const n=Math.round(Math.min(70,Math.max(24,W*H/14000)));let s=7;const rnd=()=>(s=(s*16807)%2147483647)/2147483647;
-    pts=Array.from({length:n},()=>({x:rnd()*W,y:rnd()*H,vx:(rnd()-.5)*.22,vy:(rnd()-.5)*.22,r:1+rnd()*1.6,q:rnd()<.5}));}
+    pts=Array.from({length:n},()=>{const vx=(rnd()-.5)*.22,vy=(rnd()-.5)*.22;return {x:rnd()*W,y:rnd()*H,vx,vy,vx0:vx,vy0:vy,r:1+rnd()*1.6,q:rnd()<.5};});}
   function draw(){ctx.clearRect(0,0,W,H);const L=130;
     for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const a=pts[i],b=pts[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.hypot(dx,dy);
       if(d<L){const al=(1-d/L)*.22;ctx.strokeStyle=`rgba(${rgb},${al.toFixed(3)})`;ctx.lineWidth=1;ctx.beginPath();
         /* a gentle arc, like a field line, bowing away from the midpoint */
         const mx=(a.x+b.x)/2-dy*.18,my=(a.y+b.y)/2+dx*.18;ctx.moveTo(a.x,a.y);ctx.quadraticCurveTo(mx,my,b.x,b.y);ctx.stroke();}}
-    for(const p of pts){ctx.fillStyle=`rgba(${rgb},${p.q?.75:.45})`;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,7);ctx.fill();}}
-  function step(){for(const p of pts){p.x+=p.vx;p.y+=p.vy;if(p.x<-10)p.x=W+10;if(p.x>W+10)p.x=-10;if(p.y<-10)p.y=H+10;if(p.y>H+10)p.y=-10;}draw();raf=requestAnimationFrame(step);}
+    for(const p of pts){ctx.fillStyle=`rgba(${rgb},${p.q?.75:.45})`;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,7);ctx.fill();}
+    if(ptr.on){const R=180;for(const p of pts){const dx=p.x-ptr.x,dy=p.y-ptr.y,d=Math.hypot(dx,dy);if(d<R){ctx.strokeStyle=`rgba(${rgb},${((1-d/R)*.45).toFixed(3)})`;ctx.lineWidth=1.2;
+        ctx.beginPath();ctx.moveTo(ptr.x,ptr.y);ctx.quadraticCurveTo((p.x+ptr.x)/2+dy*.22,(p.y+ptr.y)/2-dx*.22,p.x,p.y);ctx.stroke();}}
+      const g=ctx.createRadialGradient(ptr.x,ptr.y,0,ptr.x,ptr.y,26);g.addColorStop(0,`rgba(${rgb},.55)`);g.addColorStop(1,`rgba(${rgb},0)`);ctx.fillStyle=g;ctx.beginPath();ctx.arc(ptr.x,ptr.y,26,0,7);ctx.fill();}
+    for(const w of ripples){ctx.strokeStyle=`rgba(${rgb},${(.5*(1-w.t)).toFixed(3)})`;ctx.lineWidth=2;ctx.beginPath();ctx.arc(w.x,w.y,w.t*220,0,7);ctx.stroke();}}
+  function step(){
+    for(const p of pts){
+      if(ptr.on){const dx=ptr.x-p.x,dy=ptr.y-p.y,d=Math.max(30,Math.hypot(dx,dy));if(d<220){const f=(p.q?1:-1)*14/(d*d);p.vx+=dx*f;p.vy+=dy*f;}}
+      for(const w of ripples){const dx=p.x-w.x,dy=p.y-w.y,d=Math.hypot(dx,dy)||1,front=w.t*220;if(Math.abs(d-front)<18){p.vx+=dx/d*.35;p.vy+=dy/d*.35;}}
+      p.vx+=(p.vx0-p.vx)*.025;p.vy+=(p.vy0-p.vy)*.025;const sp=Math.hypot(p.vx,p.vy);if(sp>2.2){p.vx*=2.2/sp;p.vy*=2.2/sp;}
+      p.x+=p.vx;p.y+=p.vy;if(p.x<-10)p.x=W+10;if(p.x>W+10)p.x=-10;if(p.y<-10)p.y=H+10;if(p.y>H+10)p.y=-10;}
+    for(let i=ripples.length-1;i>=0;i--){ripples[i].t+=.018;if(ripples[i].t>=1)ripples.splice(i,1);}
+    draw();raf=requestAnimationFrame(step);}
   function start(){stop();if(!REDUCE.matches&&visible&&!document.hidden)raf=requestAnimationFrame(step);else draw();}
   function stop(){cancelAnimationFrame(raf);raf=0;}
+  const at=e=>{const r=cv.getBoundingClientRect();ptr.x=e.clientX-r.left;ptr.y=e.clientY-r.top;};
+  hero.addEventListener('pointermove',e=>{if(e.target.closest('a,button'))return void(ptr.on=false);at(e);ptr.on=true;});
+  hero.addEventListener('pointerleave',()=>{ptr.on=false;});
+  hero.addEventListener('pointerdown',e=>{if(e.target.closest('a,button')||!motion())return;at(e);ripples.push({x:ptr.x,y:ptr.y,t:0});if(ripples.length>4)ripples.shift();if(e.pointerType!=='mouse')setTimeout(()=>{ptr.on=false;},600);});
   size();recolor();start();
   let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{size();draw();},120);});
   document.addEventListener('visibilitychange',start);
