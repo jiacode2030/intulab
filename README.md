@@ -15,7 +15,7 @@ It's plain static files with no build step:
 
 Intulab can be installed as an app (a Progressive Web App), with no app store involved. On iPhone it's Share → Add to Home Screen; on Android it's ⋮ → Install app. The **Get the app** button on the landing page shows these steps, or opens Chrome's install prompt directly.
 
-- `manifest.webmanifest` holds the app's name, colors and icons. Its `scope` is `/`, so Mechanics, E&M and Chemistry open inside the app. Every AP page links to this manifest, so "Add to Home Screen" from any of them installs the same app.
+- `manifest.webmanifest` holds the app's name, colors and icons. Its `scope` is `/`, so every course site (Mechanics, E&M, Chemistry, Calculus, Precalculus and Biology) opens inside the app. Every AP page links to this manifest, so "Add to Home Screen" from any of them installs the same app.
 - `icons/` holds the app icons: `any`, `maskable` (Android) and `apple-touch-icon.png` (iPhone).
 - Each AP site has its own `sw.js` (a service worker). It loads pages from the network first, so updates show up right away, and falls back to the saved copy when offline. Google Fonts are saved after the first download. Analytics and other sites are never touched.
 - When the installed app opens, the landing page also registers each live course's `sw.js`, so all courses work offline from the first launch. Browser visitors only save the landing page.
@@ -130,7 +130,7 @@ To see issues across courses, filter by label:
 - One type everywhere: `is:issue is:open label:type:bug`
 - Everything open: `is:issue is:open`, then sort by newest or by most commented
 
-Create the labels once (Issues → Labels): `course:mechanics`, `course:em`, `course:chem`, `course:landing`, `type:content`, `type:bug` and `type:suggestion`. The workflow creates any `course:*` label that's missing the first time it's used.
+Create the labels once (Issues → Labels): `course:mechanics`, `course:em`, `course:chem`, `course:calc`, `course:precalc`, `course:bio`, `course:landing`, `type:content`, `type:bug` and `type:suggestion`. The workflow creates any `course:*` label that's missing the first time it's used.
 
 **Snippet for each course site.** The Mechanics site builds its issue link from `REPO` in its Report code. Replace that constant and the `issue.href=...` line with this, and change the three constants per site:
 
@@ -151,6 +151,7 @@ The values per site are:
 | E&M | `E&M Lab` | `course:em` |
 | Chemistry | `Chemistry Lab` | `course:chem` |
 | Calculus | `Calculus Lab` | `course:calc` |
+| Precalculus | `Precalculus Lab` | `course:precalc` |
 | Biology | `Biology Lab` | `course:bio` |
 
 (GitHub applies the `labels=` URL parameter only for people with triage access. For everyone else, the workflow labels the issue from the `**Course:**` line.)
