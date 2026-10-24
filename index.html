@@ -166,6 +166,14 @@ h1 span{background-image:linear-gradient(100deg,var(--brand),var(--violet),var(-
 
 /* courses */
 main{position:relative;z-index:1;padding-bottom:72px}
+.resume{display:flex;align-items:center;gap:14px;margin:0 0 22px;padding:14px 18px;border:1px solid var(--line);border-left:4px solid var(--c,var(--accent));border-radius:14px;background:color-mix(in srgb,var(--c,var(--accent)) 8%,var(--surface));color:var(--ink);text-decoration:none;box-shadow:var(--shadow);transition:transform .2s var(--ease),box-shadow .2s var(--ease)}
+.resume[hidden]{display:none}
+.resume:hover{transform:translateY(-2px);box-shadow:var(--shadow-hi)}
+.resume .rtxt{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.resume small{font:500 12px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.resume b{font:700 18px/1.25 var(--f-display);overflow:hidden;text-overflow:ellipsis}
+.resume .rarr{font-size:22px;color:var(--c,var(--accent))}
+.resume .rdot{width:12px;height:12px;border-radius:50%;background:var(--c,var(--accent));flex:none}
 .head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:16px 24px;margin-bottom:24px}
 h2{font:800 clamp(26px,3.4vw,34px)/1.1 var(--f-display);letter-spacing:-.025em;margin:0}
 .tools{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
@@ -319,6 +327,7 @@ footer .flinks{flex-basis:100%;display:flex;flex-wrap:wrap;gap:0 24px;border-top
 
 <main id="courses" tabindex="-1">
   <div class="wrap">
+    <a class="resume" id="resume" href="#" hidden><span class="rdot" aria-hidden="true"></span><span class="rtxt"><small>Pick up where you left off</small><b id="resume-t"></b></span><span class="rarr" aria-hidden="true">&rarr;</span></a>
     <div class="head">
       <h2>Courses</h2>
       <div class="tools">
@@ -521,6 +530,9 @@ function render(){
 $('#q').addEventListener('input',e=>{query=e.target.value;render();});
 $('#grid').addEventListener('click',e=>{const a=e.target.closest('a.card');if(a)event('open:'+a.dataset.id);});
 render();
+/* resume: the course sites remember the last module opened on this device ({id,t,ts} under <prefix>last); show the newest one. Read-only. */
+{let best=null;COURSES.filter(c=>c.status==='live'&&c.prefix).forEach(c=>{try{const o=JSON.parse(localStorage.getItem(c.prefix+'last')||'null');if(o&&typeof o.id==='string'&&/^[\w-]+$/.test(o.id)&&typeof o.t==='string'&&Number.isFinite(o.ts)&&(!best||o.ts>best.o.ts))best={c,o};}catch(e){}});
+  if(best){const a=$('#resume');a.href=new URL(best.c.url,location.href).href+'#'+best.o.id;a.style.setProperty('--c',safeColor(best.c.accent));$('#resume-t').textContent=best.o.t+' · '+best.c.title;a.hidden=false;}}
 /* progress may change in another tab */
 addEventListener('storage',e=>{if(!e.key||COURSES.some(c=>c.progressKey===e.key))render();});
 addEventListener('pageshow',e=>{if(e.persisted)render();});
