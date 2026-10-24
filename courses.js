@@ -3,9 +3,8 @@
    id           short, unique; used in analytics events (open:<id>)
    title        card heading
    course       the exam it covers (small line under the title)
-   subject      Physics | Chemistry | Biology | Math  (sets the icon)
-   description  a sentence or two (used by search)
-   blurb        one short line shown on the card
+   subject      Physics | Chemistry | Biology | Math  (sets the icon and the filter chip)
+   description  one line
    modules      how many modules the site has (the "Y" in "X of Y done"); null if unknown
    topics       3 to 5 short chips
    url          where the site lives
@@ -13,7 +12,6 @@
    accent       one hex color; the page darkens it automatically in light mode
    prefix       the site's localStorage prefix
    progressKey  the key holding "marked as done" progress: a JSON object {moduleId: 1}
-                The "Continue where you left off" button reads <prefix>last: {"id": moduleId, "t": title, "ts": time in ms}
    label        the GitHub label used in jiacode2030/intulab-feedback
 */
 window.COURSES = [
@@ -23,7 +21,6 @@ window.COURSES = [
     course: 'AP Physics C: Mechanics',
     subject: 'Physics',
     description: 'See the motion first: live simulations, worked examples and randomized practice from kinematics to oscillations, plus waves as an extra.',
-    blurb: 'Kinematics to oscillations, as live simulations.',
     modules: 32,
     topics: ['Kinematics', "Newton's laws", 'Energy', 'Rotation', 'Oscillations'],
     url: 'https://jiacode2030.github.io/physics-mechanics/',
@@ -39,7 +36,6 @@ window.COURSES = [
     course: 'AP Physics C: Electricity and Magnetism',
     subject: 'Physics',
     description: 'Fields you can see and move: charges, circuits, magnets and induction, built up one idea at a time.',
-    blurb: 'Fields, circuits, magnetism and induction you can move.',
     modules: 23,
     topics: ['Electrostatics', "Gauss's law", 'Circuits', 'Magnetism', 'Induction'],
     url: 'https://jiacode2030.github.io/physics-em/',
@@ -55,7 +51,6 @@ window.COURSES = [
     course: 'AP Chemistry',
     subject: 'Chemistry',
     description: 'From atoms to equilibrium: particle-level models, interactive graphs and practice with real numbers.',
-    blurb: 'Atoms to equilibrium, with particle-level models.',
     modules: 44,
     topics: ['Atomic structure', 'Bonding', 'Kinetics', 'Equilibrium', 'Acids and bases'],
     url: 'https://jiacode2030.github.io/chemistry-lab/',
@@ -71,7 +66,6 @@ window.COURSES = [
     course: 'AP Calculus AB and BC',
     subject: 'Math',
     description: 'Graphs you can drag and zoom, worked examples and randomized practice with exact answers, for AB or BC.',
-    blurb: 'Limits, derivatives, integrals and series, for AB or BC.',
     modules: 50,
     topics: ['Limits', 'Derivatives', 'Integrals', 'Differential equations', 'Series (BC)'],
     url: 'https://jiacode2030.github.io/calculus-lab/',
@@ -87,7 +81,6 @@ window.COURSES = [
     course: 'AP Precalculus',
     subject: 'Math',
     description: 'Every function family as a live graph: polynomials and rational functions, exponentials and logs, the unit circle, sinusoids and polar curves, with worked examples and randomized practice.',
-    blurb: 'Every function family as a live graph, trig and polar included.',
     modules: 41,
     topics: ['Polynomials', 'Rational functions', 'Exponentials and logs', 'Trig and polar', 'Vectors and matrices'],
     url: 'https://jiacode2030.github.io/precalculus-lab/',
@@ -103,7 +96,6 @@ window.COURSES = [
     course: 'AP Biology',
     subject: 'Biology',
     description: 'Watch it happen: membranes, enzymes, inheritance, evolution and ecosystems as live models, with worked examples and randomized practice.',
-    blurb: 'Cells, genetics, evolution and ecology as live models.',
     modules: 47,
     topics: ['Chemistry of life', 'Cells', 'Energetics', 'Genetics', 'Evolution', 'Ecology'],
     url: 'https://jiacode2030.github.io/biology-lab/',
@@ -114,6 +106,3 @@ window.COURSES = [
     label: 'course:bio'
   }
 ];
-
-/* The "Try a lab now" button in the hero: one strong simulation, opened directly. */
-window.TRY_LAB = { course: 'mechanics', module: 'projectile', name: 'projectile motion' };
