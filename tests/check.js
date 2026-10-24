@@ -111,6 +111,8 @@ const server = http.createServer((q, r) => {
   await p.evaluate(() => showUsage({ count: '7' })); ok(await p.evaluate(() => document.getElementById('u-views').hidden), 'usage: tiny totals stay hidden');
   await p.evaluate(() => showUsage({ count: '12,345', count_unique: '4 321' })); await p.waitForTimeout(1500);
   ok(await p.evaluate(() => document.querySelector('#u-views b').textContent === '12,345' && document.querySelector('#u-visitors b').textContent === '4,321' && !document.getElementById('u-views').hidden), 'usage: totals show with thousands separators');
+  await p.evaluate(() => showUsage({ count: '92', count_unique: '92' })); await p.waitForTimeout(1400);
+  ok(await p.evaluate(() => document.getElementById('u-visitors').hidden && !document.getElementById('u-views').hidden && /visits/.test(document.getElementById('u-views').textContent) && document.querySelector('#u-views b').textContent === '92'), 'usage: identical totals show one "visits" card');
   await p.evaluate(() => showUsage(null)); await p.evaluate(() => showUsage({})); ok(true, 'usage: empty answers are ignored');
   await p.goto(URL);
   ok(JSON.stringify(await p.$$eval('footer .flinks a', a => a.map(x => x.getAttribute('href').replace(/^http.*/, 'github')))) === '["privacy.html","terms.html","github"]', 'footer links: privacy, terms, report');

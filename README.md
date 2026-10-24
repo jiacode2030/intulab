@@ -185,7 +185,7 @@ window.goatcounter?.count?.({path:'module:'+id, title:'module:'+id, event:true})
 
 Use `module:<id>` for opens and `done:<id>` for "marked as done" (for example, call it in `setDone` when `v` is true).
 
-**Public totals on the landing page.** The "visitors" and "page views" cards read `https://intulab.goatcounter.com/counter/TOTAL.json`. Turn on **Settings → Allow adding visitor counts on your website** in GoatCounter or the cards stay hidden. They also stay hidden under Do Not Track / Global Privacy Control, off the live site, and until a total passes `USAGE_MIN` in `index.html` (50).
+**Public totals on the landing page.** The usage cards ("visits", or "visitors" and "page views" when GoatCounter reports different numbers) read `https://intulab.goatcounter.com/counter/TOTAL.json`. Turn on **Settings → Allow adding visitor counts on your website** in GoatCounter or the cards stay hidden. They also stay hidden under Do Not Track / Global Privacy Control, off the live site, and until a total passes `USAGE_MIN` in `index.html` (50).
 
 **Reading the counts.** In the GoatCounter dashboard:
 

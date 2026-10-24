@@ -506,7 +506,10 @@ reveal();
    Needs "Allow adding visitor counts on your website" turned on in GoatCounter. Hidden until it is on and there is a real number to show. */
 const USAGE_MIN=50;
 function showUsage(j){if(!j)return;const num=v=>parseInt(String(v==null?'':v).replace(/\D/g,''),10)||0;
-  [['u-views',num(j.count)],['u-visitors',num(j.count_unique)]].forEach(([id,n])=>{const li=document.getElementById(id);if(!li||n<USAGE_MIN)return;li.hidden=false;
+  /* GoatCounter's public total often returns the same number for both. Then show one card ("visits"), not two that look like they disagree. */
+  const v=num(j.count),u=num(j.count_unique),same=v===u;if(same){document.getElementById('u-visitors').hidden=true;document.querySelector('#u-views span').textContent='visits';}
+  else document.querySelector('#u-views span').textContent='page views';
+  [['u-views',v],...(same?[]:[['u-visitors',u]])].forEach(([id,n])=>{const li=document.getElementById(id);if(!li||n<USAGE_MIN)return;li.hidden=false;
     const b=li.querySelector('b'),fmt=x=>x.toLocaleString('en-US');b.textContent=fmt(n);
     if(motion()){const t0=performance.now(),tick=t=>{const f=Math.min(1,(t-t0)/1100),e=1-Math.pow(1-f,3);b.textContent=fmt(Math.round(n*e));if(f<1)requestAnimationFrame(tick);};requestAnimationFrame(tick);}});}
 window.showUsage=showUsage;
