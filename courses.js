@@ -81,7 +81,7 @@ window.COURSES = [
     course: 'AP Precalculus',
     subject: 'Math',
     description: 'Polar graphs you can drag and spin: the unit circle, sinusoids, inverse trig and parametric motion as live pictures, with worked examples and randomized practice.',
-    modules: 20,
+    modules: 41,
     topics: ['Unit circle', 'Sinusoids', 'Trig equations', 'Polar graphs', 'Parametric'],
     url: 'https://jiacode2030.github.io/precalculus-lab/',
     status: 'live',
