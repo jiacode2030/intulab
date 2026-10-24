@@ -116,7 +116,7 @@ const server = http.createServer((q, r) => {
   await p.evaluate(() => showUsage(null)); await p.evaluate(() => showUsage({})); ok(true, 'usage: empty answers are ignored');
   await p.goto(URL);
   ok(JSON.stringify(await p.$$eval('footer .flinks a', a => a.map(x => x.getAttribute('href').replace(/^http.*/, 'github')))) === '["privacy.html","terms.html","github"]', 'footer links: privacy, terms, report');
-  ok(await p.evaluate(() => /Created by JL/.test(document.querySelector('footer').innerText) && /© 2026 JL/.test(document.querySelector('footer').innerText) && /Last updated/.test(document.querySelector('footer').innerText)), 'footer: credit, copyright, last updated');
+  ok(await p.evaluate(() => /Built by Jiarui Li · Princeton Class of 2030 · a student project/.test(document.querySelector('footer').innerText) && /© 2026 Jiarui Li/.test(document.querySelector('footer').innerText) && /Last updated/.test(document.querySelector('footer').innerText)), 'footer: credit, copyright, last updated');
   await b.close(); server.close();
   console.log(fails ? `\n${fails} failed` : '\nall checks passed'); process.exit(fails ? 1 : 0);
 })();
