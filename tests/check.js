@@ -105,6 +105,13 @@ const server = http.createServer((q, r) => {
     ok(!e2.length, f, w, 'no page errors', e2.join(' | '));
     await q.close();
   }
+  // resume strip: shows the newest 'last module' any course site left on this device
+  await p.goto(URL);
+  ok(await p.evaluate(() => document.getElementById('resume').hidden), 'resume strip hidden when nothing was opened');
+  await p.evaluate(() => { localStorage.setItem('calc-last', JSON.stringify({ id: 'chain', t: 'The chain rule', ts: 2000 })); localStorage.setItem('bio-last', JSON.stringify({ id: 'osmosis', t: 'Osmosis', ts: 1000 })); localStorage.setItem('prec-last', '{"id":"<b>","t":"x","ts":9}'); });
+  await p.reload();
+  ok(await p.evaluate(() => { const a = document.getElementById('resume'); return !a.hidden && /calculus-lab\/#chain$/.test(a.href) && /The chain rule/.test(a.textContent) && /Calculus Lab/.test(a.textContent); }), 'resume strip shows the newest module and ignores a malformed entry');
+  await p.evaluate(() => { localStorage.removeItem('calc-last'); localStorage.removeItem('bio-last'); localStorage.removeItem('prec-last'); }); await p.reload();
   // usage totals: hidden by default (no counter off the live site), shown only for real numbers
   await p.goto(URL);
   ok(await p.evaluate(() => document.getElementById('u-views').hidden && document.getElementById('u-visitors').hidden), 'usage cards hidden when no counter data');
