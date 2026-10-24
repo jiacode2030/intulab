@@ -13,7 +13,7 @@ It's plain static files with no build step:
 
 ## The Intulab app
 
-Intulab can be installed as an app (a Progressive Web App), with no app store involved. On iPhone it's Share → Add to Home Screen; on Android it's ⋮ → Install app. The **Get the app** button on the landing page shows these steps, or opens Chrome's install prompt directly.
+Intulab can be installed as an app (a Progressive Web App), with no app store involved. On iPhone it's Share → Add to Home Screen; on Android it's ⋮ → Install app. The **Install app** button in the landing page header shows the steps for the visitor's device (iPhone/iPad, Android, Mac Safari, or Chrome/Edge on a computer; the others sit under "Other devices"), or opens Chrome's install prompt directly.
 
 - `manifest.webmanifest` holds the app's name, colors and icons. Its `scope` is `/`, so every course site (Mechanics, E&M, Chemistry, Calculus, Precalculus and Biology) opens inside the app. Every AP page links to this manifest, so "Add to Home Screen" from any of them installs the same app.
 - `icons/` holds the app icons: `any`, `maskable` (Android) and `apple-touch-icon.png` (iPhone).
@@ -36,7 +36,8 @@ Add one entry to `courses.js`. Nothing else needs to change.
   title: 'Biology Lab',
   course: 'AP Biology',
   subject: 'Biology',                 // Physics | Chemistry | Biology | Math
-  description: 'One line about the site.',
+  description: 'A sentence or two about the site.',   // used by search
+  blurb: 'One short line for the card.',
   modules: 24,                        // the Y in "X of Y modules done"; null if unknown
   topics: ['Cells', 'Genetics', 'Evolution'],
   url: 'https://jiacode2030.github.io/biology-lab/',
@@ -48,17 +49,28 @@ Add one entry to `courses.js`. Nothing else needs to change.
 }
 ```
 
-- A subject filter chip appears once at least one course has that subject.
 - Biology and Math already have icons. A brand-new subject falls back to a generic icon. To give it its own, add it to `ICONS` in `index.html`.
 - Set `status: 'live'` once the site is deployed. Until then the card is muted, shows "Coming soon" and isn't a link.
 
-### Progress rings
+### Progress bars
 
-All the sites share one origin (`jiacode2030.github.io`), so the landing page can read each course's localStorage. It only reads and never writes. The ring shows when `progressKey` holds a JSON object of finished modules, for example `{"projectile": 1, "forces": 1}`, which is what Mechanics stores under `kin-done`. Missing or unreadable data hides the ring. When `modules` is `null`, the card shows "X modules done" with no ring.
+All the sites share one origin (`jiacode2030.github.io`), so the landing page can read each course's localStorage. It only reads and never writes. The bar shows when `progressKey` holds a JSON object of finished modules, for example `{"projectile": 1, "forces": 1}`, which is what Mechanics stores under `kin-done`. Missing or unreadable data hides the bar. When `modules` is `null`, the card shows "X modules done" with no bar. A finished course shows "All N modules done ✓".
 
 New course sites should store progress the same way: `localStorage.setItem('<prefix>done', JSON.stringify({moduleId: 1, ...}))`.
 
-The landing page has no "Continue where you left off" strip, because the course sites don't store a last-visited module. To add one later, have each site save `<prefix>last` = `"<moduleId>"`.
+### Continue where you left off
+
+The hero shows a **Continue where you left off** button for the most recently opened module across all courses. Each course site saves it when a module opens:
+
+`<prefix>last` = `{id, t: <module title>, ts: <time in ms>}` (the shared "UX pack" in every course site writes it). The newest one wins; malformed entries are ignored.
+
+### Try a lab now
+
+`window.TRY_LAB` at the end of `courses.js` picks the simulation the hero button opens (now Mechanics, projectile motion). The link is `<url>?lab#<module>`. A course site that handles `?lab` scrolls straight to the module's first simulation (Precalculus does); one that doesn't just opens the module.
+
+### The hero field
+
+The hero canvas is a real electric field: +q and −q, field lines traced from E = Σ kq r̂/r², with moving dashes for the direction of E. Both charges can be dragged (or moved with the arrow keys). The caption links to E&M Lab's Electric fields module.
 
 ## Link back from each course site
 
@@ -116,7 +128,7 @@ The script opens the page at 360, 768 and 1280 px in light and dark, then checks
 - heading order
 - IDs that differ only by case
 
-It also seeds fake progress and confirms the ring reads "12 of 32 modules done", that bad or missing data hides the ring, and that the course keys are never written. Screenshots go to `tests/shots/`, or to the folder in `SHOTS=...`.
+It also seeds fake progress and confirms the bar reads "12 of 32 modules done", that bad or missing data hides the bar, that Continue picks the most recent module, that the Try a lab link and field charges work, and that the course keys are never written. Screenshots go to `tests/shots/`, or to the folder in `SHOTS=...`.
 
 ## Feedback and analytics
 

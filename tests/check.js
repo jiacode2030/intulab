@@ -22,6 +22,7 @@ const server = http.createServer((q, r) => {
   const size = ['index.html', 'courses.js'].reduce((s, f) => s + fs.statSync(path.join(ROOT, f)).size, 0);
   ok(size < 150 * 1024, `page size ${(size / 1024).toFixed(1)} KB < 150 KB`);
 
+  const window_counts = ['32 modules', '23 modules', '44 modules', '50 modules', '41 modules', '47 modules'];
   const SEED = { 'kin-done': JSON.stringify(Object.fromEntries(['deriv','integ','products','diffeq','graphs','constant','variable','vectors','projectile','relative','forces','friction'].map(k => [k, 1]))),
                  'eml-done': '{not json', 'chem-done': '{"mole":1,"units":1,"pes":1}', 'calc-done': '{"limits":1,"deriv":1}' };
 
@@ -38,13 +39,17 @@ const server = http.createServer((q, r) => {
     ok(!(await p.evaluate(() => document.documentElement.scrollWidth > innerWidth)), tag, 'no horizontal scroll');
     ok(!/NaN|undefined|Infinity|\[object/.test(await p.evaluate(() => document.body.innerText)), tag, 'no NaN/undefined text');
     ok(await p.evaluate(() => document.compatMode === 'CSS1Compat'), tag, 'standards mode');
-    const ring = await p.evaluate(() => { const a = document.querySelector('a.card[data-id="mechanics"] .prog'); return a && a.textContent.trim(); });
-    ok(ring === '12 of 32 modules done', tag, 'mechanics ring:', ring);
-    ok(await p.evaluate(() => !!document.querySelector('a.card[data-id="mechanics"] .ring .val')), tag, 'ring drawn');
-    ok(await p.evaluate(() => document.querySelectorAll('.card.soon .prog').length === 0), tag, 'no ring on coming-soon cards');
-    ok((await p.evaluate(() => { const a = document.querySelector('a.card[data-id="chem"] .prog'); return a && a.textContent.trim(); })) === '3 of 44 modules done', tag, 'chemistry ring');
-    ok((await p.evaluate(() => { const a = document.querySelector('a.card[data-id="calc"] .prog'); return a && a.textContent.trim(); })) === '2 of 50 modules done', tag, 'calculus ring');
-    ok(await p.evaluate(() => !document.querySelector('a.card[data-id="em"] .prog')), tag, 'unreadable E&M data: ring hidden');
+    const bar = await p.evaluate(() => { const a = document.querySelector('a.card[data-id="mechanics"] .prog'); return a && a.textContent.trim(); });
+    ok(bar === '12 of 32 modules done', tag, 'mechanics progress:', bar);
+    ok(await p.evaluate(() => { const i = document.querySelector('a.card[data-id="mechanics"] .bar i'); return !!i && Math.abs(parseFloat(i.style.getPropertyValue('--p')) - 12 / 32) < 1e-3; }), tag, 'progress bar drawn at 12/32');
+    ok(await p.evaluate(() => document.querySelectorAll('.card.soon .prog').length === 0), tag, 'no progress on coming-soon cards');
+    ok((await p.evaluate(() => { const a = document.querySelector('a.card[data-id="chem"] .prog'); return a && a.textContent.trim(); })) === '3 of 44 modules done', tag, 'chemistry progress');
+    ok((await p.evaluate(() => { const a = document.querySelector('a.card[data-id="calc"] .prog'); return a && a.textContent.trim(); })) === '2 of 50 modules done', tag, 'calculus progress');
+    ok(await p.evaluate(() => !document.querySelector('a.card[data-id="em"] .prog')), tag, 'unreadable E&M data: progress hidden');
+    ok(JSON.stringify(await p.$$eval('a.card .subj b', b => b.map(x => x.textContent))) === JSON.stringify(window_counts), tag, 'module counts on cards');
+    ok(/physics-mechanics\/\?lab#projectile$/.test(await p.getAttribute('#try', 'href')), tag, 'Try a lab now opens the projectile simulation');
+    ok(await p.isVisible('#qpos') && await p.isVisible('#qneg') && /This is an electric field/.test(await p.textContent('.flabel')), tag, 'labeled field with both charges');
+    ok(await p.evaluate(() => document.querySelector('#resume').hidden), tag, 'no last-module data: Continue hidden');
     const small = await p.evaluate(() => [...document.querySelectorAll('a,button,input')].filter(e => e.offsetParent && !e.classList.contains('skip'))
       .map(e => { const r = e.getBoundingClientRect(); return [e.id || e.className || e.textContent.trim().slice(0, 20), r.width, r.height]; })
       .filter(([, W, H]) => W < 44 || H < 44));
@@ -56,7 +61,7 @@ const server = http.createServer((q, r) => {
         const lum = c => { const [r, g, b2] = rgbOf(c).map(v => { v /= 255; return v <= .03928 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4; }); return .2126 * r + .7152 * g + .0722 * b2; };
         const bgOf = e => { while (e) { const c = getComputedStyle(e).backgroundColor; if (!/rgba\(0, 0, 0, 0\)|transparent/.test(c) && !/[,/] 0\)$/.test(c)) return c; e = e.parentElement; } return getComputedStyle(document.body).backgroundColor; };
         const out = [];
-        document.querySelectorAll('.tagline,.course,.desc,.topics li,.open,.meta,.prog,.badge,.subj,.chip,footer p,.btn-ghost,h3,.eyebrow,#q').forEach(e => {
+        document.querySelectorAll('.tagline,.course,.blurb,.trynote,.flabel,.topics li,.open,.meta,.prog,.badge,.subj,footer p,.btn-ghost,h3,.eyebrow,#q').forEach(e => {
           const s = getComputedStyle(e);
           const a = lum(s.color), c = lum(bgOf(e)); const r = (Math.max(a, c) + .05) / (Math.min(a, c) + .05);
           if (r < 4.5) out.push(e.className + ':' + r.toFixed(2)); });
@@ -76,9 +81,8 @@ const server = http.createServer((q, r) => {
   await p.goto(URL); await p.evaluate(s => { for (const k in s) localStorage.setItem(k, s[k]); }, SEED); await p.reload();
   const snap = () => p.evaluate(() => JSON.stringify(Object.keys(localStorage).filter(k => k !== 'hub-theme').sort().map(k => [k, localStorage.getItem(k)])));
   const before = await snap();
-  ok(JSON.stringify(await p.$$eval('.chip', c => c.map(x => x.textContent))) === '["All","Physics","Chemistry","Biology","Math"]', 'only subjects that have a course');
-  await p.click('.chip:text("Chemistry")'); ok(await p.$$eval('.card', c => c.length) === 1, 'Chemistry filter');
-  await p.click('.chip:text("All")'); await p.fill('#q', 'induction'); ok(await p.$$eval('.card h3', c => c.map(x => x.textContent).join()) === 'E&M Lab', 'search by topic');
+  ok(await p.$$eval('.chip', c => c.length) === 0, 'no subject filter chips');
+  await p.fill('#q', 'induction'); ok(await p.$$eval('.card h3', c => c.map(x => x.textContent).join()) === 'E&M Lab', 'search by topic');
   await p.fill('#q', 'zzzz'); ok(await p.isVisible('#empty'), 'empty state');
   await p.fill('#q', '');
   await p.keyboard.press('Tab'); await p.keyboard.press('Tab');
@@ -89,11 +93,22 @@ const server = http.createServer((q, r) => {
   ok(await p.evaluate(() => document.querySelectorAll('.card.soon a').length === 0), 'coming-soon cards are not links');
   const rep = await p.getAttribute('#report', 'href'); ok(rep.startsWith('https://github.com/jiacode2030/intulab-feedback/issues/new') && rep.includes('course%3Alanding'), 'report link');
   await p.evaluate(() => localStorage.clear()); await p.reload();
-  ok(await p.$$eval('.prog', r => r.length) === 0, 'no progress data: ring hidden');
+  ok(await p.$$eval('.prog', r => r.length) === 0, 'no progress data: progress hidden');
+  /* Continue where you left off: the most recent <prefix>last wins; bad data is ignored */
+  await p.evaluate(() => { localStorage.setItem('prec-last', JSON.stringify({ id: 'sinusoid', t: 'Sinusoidal transformations', ts: 2000 }));
+    localStorage.setItem('kin-last', JSON.stringify({ id: 'forces', t: "Newton's laws", ts: 1000 })); localStorage.setItem('chem-last', '{"id":"<x>","ts":9999}'); localStorage.setItem('bio-last', 'nope'); });
+  await p.reload();
+  ok(await p.getAttribute('#resume', 'href') === 'https://jiacode2030.github.io/precalculus-lab/#sinusoid' && /Precalculus Lab · Sinusoidal transformations/.test(await p.textContent('#resume')), 'Continue: most recent module');
+  await p.evaluate(() => localStorage.clear()); await p.reload();
+  /* the field charges move with the arrow keys and stay apart */
+  { const at = () => p.evaluate(() => document.querySelector('#qpos').style.transform);
+    const t0 = await at(); await p.focus('#qpos'); await p.keyboard.press('ArrowDown'); ok((await at()) !== t0, 'arrow keys move a charge'); }
+  await p.evaluate(() => localStorage.setItem('kin-done', JSON.stringify(Object.fromEntries(Array.from({ length: 32 }, (_, i) => ['m' + i, 1]))))); await p.reload();
+  ok((await p.textContent('a.card[data-id="mechanics"] .prog')).trim() === 'All 32 modules done ✓', 'finished course shows a checkmark');
   await p.evaluate(() => localStorage.setItem('kin-done', '{"a":1,"b":0,"c":1}')); await p.reload();
   ok((await p.textContent('a.card[data-id="mechanics"] .prog')).trim() === '2 of 32 modules done', 'falsy entries not counted');
   await p.evaluate(() => localStorage.setItem('kin-done', '"broken"')); await p.reload();
-  ok(await p.$$eval('.prog', r => r.length) === 0, 'bad data: ring hidden');
+  ok(await p.$$eval('.prog', r => r.length) === 0, 'bad data: progress hidden');
 
   /* legal pages: load cleanly, link back, no overflow, footer links on the landing page */
   for (const f of ['privacy.html', 'terms.html']) for (const w of [360, 1280]) {

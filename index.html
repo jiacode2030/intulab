@@ -147,8 +147,37 @@ h1 span{background-image:linear-gradient(100deg,var(--brand),var(--violet),var(-
 .stats b{font:800 24px/1.1 var(--f-display);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .stats span{font-size:13px;color:var(--muted)}
 .stats li[hidden]{display:none}
-.hint{margin:16px 0 0;font:500 12px var(--f-mono);letter-spacing:.04em;color:var(--muted)}
-@media (hover:none){.hint{display:none}}
+
+/* hero layout: words on the left, a live electric field on the right (below on phones) */
+.hgrid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);grid-template-areas:"text stage" "stats stage";column-gap:40px;align-items:start}
+.htext{grid-area:text}.stats{grid-area:stats}
+.stage{grid-area:stage;position:relative;min-height:400px;align-self:stretch;touch-action:pan-y}
+.trynote{margin:12px 0 0;font-size:14px;color:var(--muted)}
+.cta.try{background:var(--brand);color:var(--on-accent)}
+.cta.try svg{transition:transform .2s var(--ease)}.cta.try:hover svg{transform:translateX(3px)}
+/* the two charges: big enough for a thumb, dragged by pointer or moved with the arrow keys */
+.qh{position:absolute;left:0;top:0;width:48px;height:48px;margin:-24px 0 0 -24px;padding:0;border:0;border-radius:50%;background:transparent;cursor:grab;touch-action:none;display:grid;place-items:center;z-index:2}
+.qh:active{cursor:grabbing}
+.qh span{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;font:700 22px/1 var(--f-body);color:#fff;box-shadow:0 0 0 6px var(--qr),0 4px 14px rgba(0,0,0,.25);transition:transform .2s var(--ease)}
+.qh:hover span,.qh.drag span{transform:scale(1.12)}
+.qh.pos{--qc:#E5484D;--qr:#E5484D33}.qh.neg{--qc:#2F6FEB;--qr:#2F6FEB33}
+.qh span{background:var(--qc)}
+.qh:focus-visible{outline-offset:2px;border-radius:50%}
+.qh.pos:not(.moved) span{animation:nudge 2.6s ease-in-out 1.2s 3}
+@keyframes nudge{0%,100%{transform:none}30%{transform:translateX(-7px) scale(1.06)}60%{transform:translateX(5px)}}
+.flabel{position:absolute;left:0;right:0;bottom:0;margin:0;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:color-mix(in srgb,var(--surface) 82%,transparent);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);font-size:15px;line-height:1.4;z-index:1}
+.flabel b{font-weight:600}
+.flabel a{display:inline-flex;align-items:center;min-height:44px;margin:-6px 0 -12px;color:var(--brand);font-weight:600;text-decoration:none}
+.flabel a:hover{text-decoration:underline}
+
+/* Continue where you left off */
+.resume{display:flex;align-items:center;gap:14px;max-width:460px;margin:0 0 20px;padding:12px 16px;border:1px solid var(--line);border-radius:16px;background:var(--surface);box-shadow:var(--shadow);text-decoration:none;color:inherit;--a:color-mix(in oklab,var(--accent) var(--mix),var(--mix-to));transition:border-color .2s var(--ease),transform .2s var(--ease)}
+.resume:hover{border-color:var(--a);transform:translateY(-2px)}
+.resume .icon{width:44px;height:44px;border-radius:12px}.resume .icon svg{width:24px;height:24px}
+.resume small{display:block;font:500 12px/1.3 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.resume b{display:block;font-weight:600;font-size:16px;line-height:1.3}
+.resume .sub{display:block;font-size:13px;color:var(--muted)}
+.resume .go{margin-left:auto;flex:none;width:20px;height:20px;color:var(--a)}
 
 /* how it works */
 .how{margin-top:72px}
@@ -166,21 +195,9 @@ h1 span{background-image:linear-gradient(100deg,var(--brand),var(--violet),var(-
 
 /* courses */
 main{position:relative;z-index:1;padding-bottom:72px}
-.resume{display:flex;align-items:center;gap:14px;margin:0 0 22px;padding:14px 18px;border:1px solid var(--line);border-left:4px solid var(--c,var(--accent));border-radius:14px;background:color-mix(in srgb,var(--c,var(--accent)) 8%,var(--surface));color:var(--ink);text-decoration:none;box-shadow:var(--shadow);transition:transform .2s var(--ease),box-shadow .2s var(--ease)}
-.resume[hidden]{display:none}
-.resume:hover{transform:translateY(-2px);box-shadow:var(--shadow-hi)}
-.resume .rtxt{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
-.resume small{font:500 12px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.resume b{font:700 18px/1.25 var(--f-display);overflow:hidden;text-overflow:ellipsis}
-.resume .rarr{font-size:22px;color:var(--c,var(--accent))}
-.resume .rdot{width:12px;height:12px;border-radius:50%;background:var(--c,var(--accent));flex:none}
 .head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:16px 24px;margin-bottom:24px}
 h2{font:800 clamp(26px,3.4vw,34px)/1.1 var(--f-display);letter-spacing:-.025em;margin:0}
 .tools{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;border:0}
-.chip{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted);font:500 14px/1 var(--f-body);cursor:pointer;transition:all .2s var(--ease)}
-.chip:hover{color:var(--ink);border-color:var(--muted)}
-.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
 .search{position:relative;flex:1 1 220px;max-width:280px}
 .search svg{position:absolute;left:14px;top:50%;width:18px;height:18px;transform:translateY(-50%);color:var(--muted);pointer-events:none}
 .search input{width:100%;min-height:44px;padding:0 14px 0 42px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:15px var(--f-body)}
@@ -205,7 +222,8 @@ a.card:hover .icon[data-s="Math"] svg path:first-child{stroke-dasharray:1;animat
 @keyframes twist{0%,100%{transform:scaleX(1)}50%{transform:scaleX(.35)}}
 @keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
 a.card:focus-visible{outline-offset:4px;border-radius:18px}
-.card .row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px}
+.card .row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.card .subj{text-align:right;line-height:1.5}
 .icon{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;color:var(--a);background:color-mix(in oklab,var(--accent) 14%,transparent);flex:none}
 .icon svg{width:28px;height:28px}
 .subj{font:500 12px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
@@ -219,13 +237,15 @@ h3{font:800 23px/1.15 var(--f-display);letter-spacing:-.02em;margin:0 0 4px}
 a.card:hover .open{gap:12px}
 .open svg{width:16px;height:16px}
 .meta{font-size:14px;color:var(--muted)}
-.prog{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted)}
+.subj b{color:var(--ink);font-weight:500}
+.blurb{margin:0 0 16px;font-size:16px}
+.prog{display:flex;flex-direction:column;gap:6px;flex:1 1 auto;min-width:0;max-width:200px;font-size:14px;color:var(--muted)}
 .prog b{color:var(--ink);font-weight:600}
 .prog>span{white-space:nowrap}
-.ring{width:40px;height:40px;transform:rotate(-90deg);flex:none}
-.ring circle{fill:none;stroke-width:4}
-.ring .track{stroke:var(--sunk)}
-.ring .val{stroke:var(--a);stroke-linecap:round;transition:stroke-dashoffset .9s var(--ease)}
+.bar{display:block;height:8px;border-radius:999px;background:var(--sunk);overflow:hidden}
+.bar i{display:block;height:100%;width:100%;border-radius:inherit;background:var(--a);transform-origin:left;transform:scaleX(var(--p,0));transition:transform .9s var(--ease)}
+.bar i.zero{transform:scaleX(0)}
+.prog.all b{color:var(--a)}
 .card.soon{box-shadow:none;background:transparent;border-style:dashed}
 .card.soon::before{opacity:.35}
 .card.soon .icon{filter:grayscale(.6);opacity:.7}
@@ -264,12 +284,24 @@ footer .tm{margin-top:10px;font-size:13px}
 .li-link:hover{border-color:#0A66C2}
 footer .flinks{flex-basis:100%;display:flex;flex-wrap:wrap;gap:0 24px;border-top:1px solid var(--line);padding-top:8px}
 
+@media (max-width:860px){
+  .hgrid{grid-template-columns:minmax(0,1fr);grid-template-areas:"text" "stage" "stats"}
+  .stage{min-height:340px;margin-top:20px}
+}
 @media (max-width:560px){
   .wrap{padding:0 16px}
-  .hero{padding:124px 0 56px}
+  .hero{padding:104px 0 48px}
   .tl{display:none}
+  h1{font-size:52px;margin-bottom:12px}
+  .tagline{margin-bottom:22px}
+  .eyebrow{margin-bottom:14px}
+  .ctas .cta{flex:1 1 100%;justify-content:center;min-height:52px;font-size:16px}
+  .stage{min-height:320px}
+  .stats{margin-top:20px;gap:8px}.stats li{min-width:0;flex:1 1 calc(33% - 8px);padding:10px 12px}.stats b{font-size:20px}
   .search{max-width:none}
   .card{padding:20px}
+  .card .topics{display:none}
+  .card .blurb{margin-bottom:18px}
 }
 @media (prefers-reduced-motion:reduce){
   h1 span,.eyebrow i{animation:none}
@@ -289,6 +321,8 @@ footer .flinks{flex-basis:100%;display:flex;flex-wrap:wrap;gap:0 24px;border-top
       Intulab
     </a>
     <div class="actions">
+      <button class="btn-ghost" id="install" type="button" hidden aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M12 7v7M9 11l3 3 3-3"/></svg>Install app</button>
       <a class="btn-ghost" id="report" href="#" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 22V4a1 1 0 0 1 1-1h11l-2 4 2 4H5"/></svg>
         <span class="tl">Report an issue</span><span class="sr"> (opens GitHub in a new tab)</span>
@@ -303,15 +337,24 @@ footer .flinks{flex-basis:100%;display:flex;flex-wrap:wrap;gap:0 24px;border-top
 
 <section class="hero" aria-labelledby="title">
   <canvas id="field" aria-hidden="true"></canvas>
-  <div class="wrap">
-    <p class="eyebrow"><i></i>Free · Interactive · Unofficial</p>
-    <h1 id="title">Intu<span>lab</span></h1>
-    <p class="tagline">Interactive, intuition-first study sites for <span class="sr">AP science and math.</span><span class="rot" id="rot" aria-hidden="true"><b>AP science and math</b></span></p>
-    <div class="ctas">
-      <a class="cta" href="#courses">Browse courses
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
-      <button class="cta alt" id="install" type="button" hidden aria-haspopup="dialog">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M12 7v7M9 11l3 3 3-3"/></svg>Get the app</button>
+  <div class="wrap hgrid">
+    <div class="htext">
+      <p class="eyebrow"><i></i>Free · Interactive · Unofficial</p>
+      <h1 id="title">Intu<span>lab</span></h1>
+      <p class="tagline">Interactive, intuition-first study sites for <span class="sr">AP science and math.</span><span class="rot" id="rot" aria-hidden="true"><b>AP science and math</b></span></p>
+      <a class="resume" id="resume" hidden href="#"></a>
+      <div class="ctas">
+        <a class="cta try" id="try" href="#courses">Try a lab now
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="cta alt" href="#courses">Browse courses
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
+      </div>
+      <p class="trynote" id="trynote" hidden></p>
+    </div>
+    <div class="stage" id="stage">
+      <button class="qh pos" id="qpos" type="button" aria-label="Positive charge. Drag it, or use the arrow keys to move it."><span aria-hidden="true">+</span></button>
+      <button class="qh neg" id="qneg" type="button" aria-label="Negative charge. Drag it, or use the arrow keys to move it."><span aria-hidden="true">−</span></button>
+      <p class="flabel"><b>This is an electric field.</b> Drag the charges. The lines run from + to −. <a id="flink" href="#courses">Explore fields in E&amp;M Lab&nbsp;→</a></p>
     </div>
     <ul class="stats" id="stats" aria-label="At a glance">
       <li><b data-count="courses">6</b><span>courses</span></li>
@@ -319,19 +362,15 @@ footer .flinks{flex-basis:100%;display:flex;flex-wrap:wrap;gap:0 24px;border-top
       <li id="u-visitors" hidden><b data-n>0</b><span>visitors</span></li>
       <li id="u-views" hidden><b data-n>0</b><span>page views</span></li>
       <li><b>Free</b><span>no sign-up</span></li>
-      <li><b>Offline</b><span>as an app</span></li>
     </ul>
-    <p class="hint" aria-hidden="true">Move your pointer over the field, or tap it.</p>
   </div>
 </section>
 
 <main id="courses" tabindex="-1">
   <div class="wrap">
-    <a class="resume" id="resume" href="#" hidden><span class="rdot" aria-hidden="true"></span><span class="rtxt"><small>Pick up where you left off</small><b id="resume-t"></b></span><span class="rarr" aria-hidden="true">&rarr;</span></a>
     <div class="head">
       <h2>Courses</h2>
       <div class="tools">
-        <fieldset class="chips" id="filters"><legend class="sr">Filter by subject</legend></fieldset>
         <div class="search">
           <label class="sr" for="q">Search courses</label>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
@@ -340,7 +379,7 @@ footer .flinks{flex-basis:100%;display:flex;flex-wrap:wrap;gap:0 24px;border-top
       </div>
     </div>
     <ul class="grid" id="grid"></ul>
-    <p class="empty" id="empty" hidden>No courses match. Try another subject or search.</p>
+    <p class="empty" id="empty" hidden>No courses match. Try a shorter word.</p>
     <p class="sr" id="status" aria-live="polite"></p>
 
     <section class="how" aria-labelledby="how-h">
@@ -359,7 +398,7 @@ footer .flinks{flex-basis:100%;display:flex;flex-wrap:wrap;gap:0 24px;border-top
 
 <dialog class="appdlg" id="appdlg" aria-labelledby="appdlg-h">
   <form method="dialog">
-    <h2 id="appdlg-h">Get the Intulab app</h2>
+    <h2 id="appdlg-h">Install the Intulab app</h2>
     <p>It's free, with no app store. It opens full screen from your home screen, and once you've opened it, it works offline too.</p>
     <div class="steps-os" data-os="ios">
       <h3>iPhone or iPad (Safari)</h3>
@@ -369,6 +408,10 @@ footer .flinks{flex-basis:100%;display:flex;flex-wrap:wrap;gap:0 24px;border-top
     <div class="steps-os" data-os="android">
       <h3>Android (Chrome)</h3>
       <ol><li>Tap the <b>⋮</b> menu at the top right.</li><li>Tap <b>Install app</b> (or <b>Add to Home screen</b>).</li><li>Tap <b>Install</b>.</li></ol>
+    </div>
+    <div class="steps-os" data-os="mac">
+      <h3>Mac (Safari)</h3>
+      <ol><li>Open the <b>File</b> menu.</li><li>Click <b>Add to Dock</b> (needs macOS Sonoma or later).</li></ol>
     </div>
     <div class="steps-os" data-os="desktop">
       <h3>Computer (Chrome or Edge)</h3>
@@ -432,7 +475,8 @@ function saveCoursesOffline(){if(!swOK)return;COURSES.filter(c=>c.status==='live
 if(swOK)addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});if(isApp)saveCoursesOffline();});
 addEventListener('appinstalled',()=>{saveCoursesOffline();$('#install').hidden=true;});
 {const btn=$('#install'),dlg=$('#appdlg');let prompt=null;
-  const ua=navigator.userAgent,os=/iPhone|iPad|iPod/.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1)?'ios':/Android/.test(ua)?'android':'desktop';
+  const ua=navigator.userAgent,os=/iPhone|iPad|iPod/.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1)?'ios':/Android/.test(ua)?'android':
+    /Macintosh/.test(ua)&&/Safari\//.test(ua)&&!/Chrome|Chromium|CriOS|Edg|Firefox|OPR/.test(ua)?'mac':'desktop';
   /* show this device's steps first; the others go under "Other devices" */
   const box=dlg.querySelector('form'),mine=dlg.querySelector(`[data-os="${os}"]`),more=document.createElement('details');
   more.innerHTML='<summary>Other devices</summary>';dlg.querySelectorAll('.steps-os').forEach(el=>{if(el!==mine)more.appendChild(el);});
@@ -477,11 +521,11 @@ const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;
 const safeColor=c=>/^#[0-9a-f]{3,8}$/i.test(c||'')?c:'#5CB8FF';
 const safeUrl=u=>/^https?:\/\//i.test(u||'')||/^\.?\//.test(u||'')?u:'#';
 
-function ring(p){
-  const R=16,C=2*Math.PI*R,f=p.total?p.done/p.total:0;
-  const label=p.total?`${p.done} of ${p.total} modules done`:`${p.done} module${p.done===1?'':'s'} done`;
-  const svg=p.total?`<svg class="ring" viewBox="0 0 40 40" aria-hidden="true"><circle class="track" cx="20" cy="20" r="${R}"/><circle class="val" cx="20" cy="20" r="${R}" stroke-dasharray="${C.toFixed(2)}" stroke-dashoffset="${C.toFixed(2)}" data-to="${(C*(1-f)).toFixed(2)}"/></svg>`:'';
-  return `<span class="prog">${svg}<span><b>${p.done}</b>${esc(label.slice(String(p.done).length))}</span></span>`;
+function bar(p){
+  const f=p.total?p.done/p.total:0,all=p.total&&p.done>=p.total;
+  const label=all?`All ${p.total} modules done ✓`:p.total?`${p.done} of ${p.total} modules done`:`${p.done} module${p.done===1?'':'s'} done`;
+  const b=p.total?`<span class="bar" aria-hidden="true"><i class="zero" style="--p:${f.toFixed(4)}"></i></span>`:'';
+  return `<span class="prog${all?' all':''}"><span>${esc(label).replace(/^(All )?(\d+)/,(m,a,n)=>(a||'')+'<b>'+n+'</b>')}</span>${b}</span>`;
 }
 
 function card(c){
@@ -489,10 +533,11 @@ function card(c){
   const icon=ICONS[c.subject]||ICONS.Science;
   const topics=(Array.isArray(c.topics)?c.topics:[]).slice(0,5).map(t=>`<li>${esc(t)}</li>`).join('');
   const p=live?progress(c):null;
-  const left=live?(p?ring(p):(Number.isFinite(c.modules)?`<span class="meta">${c.modules} modules</span>`:'<span></span>')):'<span class="badge">Coming soon</span>';
+  const count=Number.isFinite(c.modules)?`<b>${c.modules} modules</b>`:'';
+  const left=live?(p?bar(p):'<span class="meta">Not started</span>'):'<span class="badge">Coming soon</span>';
   const right=live?`<span class="open" aria-hidden="true">Open${ARROW}</span>`:'';
-  const inner=`<div class="row"><span class="icon" data-s="${esc(c.subject)}">${icon}</span><span class="subj">${esc(c.subject)}</span></div>
-    <h3>${esc(c.title)}</h3><p class="course">${esc(c.course)}</p><p class="desc">${esc(c.description)}</p>
+  const inner=`<div class="row"><span class="icon" data-s="${esc(c.subject)}">${icon}</span><span class="subj">${esc(c.subject)}${count?'<br>'+count:''}</span></div>
+    <h3>${esc(c.title)}</h3><p class="course">${esc(c.course)}</p><p class="blurb">${esc(c.blurb||c.description)}</p>
     <ul class="topics" aria-label="Topics">${topics}</ul><div class="foot">${left}${right}</div>`;
   const style=`style="--accent:${safeColor(c.accent)}"`;
   return live
@@ -500,26 +545,18 @@ function card(c){
     : `<li class="rv"><div class="card soon" aria-disabled="true" ${style}>${inner}</div></li>`;
 }
 
-/* Filters: only subjects that have at least one course. */
-const ORDER=['Physics','Chemistry','Biology','Math'];
-const subjects=[...new Set(COURSES.map(c=>c.subject))].sort((a,b)=>(ORDER.indexOf(a)+1||99)-(ORDER.indexOf(b)+1||99));
-let subject='All',query='';
-const fs=$('#filters');
-['All',...subjects].forEach(s=>{const b=document.createElement('button');b.type='button';b.className='chip';b.textContent=s;b.setAttribute('aria-pressed',String(s==='All'));
-  b.addEventListener('click',()=>{subject=s;fs.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));render();});fs.appendChild(b);});
-if(subjects.length<2)fs.hidden=true;
+let query='';
 
 function render(){
   const q=query.trim().toLowerCase();
-  const list=COURSES.filter(c=>(subject==='All'||c.subject===subject)&&
-    (!q||[c.title,c.course,c.subject,c.description,...(c.topics||[])].join(' ').toLowerCase().includes(q)));
+  const list=COURSES.filter(c=>!q||[c.title,c.course,c.subject,c.description,c.blurb,...(c.topics||[])].join(' ').toLowerCase().includes(q));
   /* live courses first, then coming soon, keeping file order */
   list.sort((a,b)=>(a.status==='live'?0:1)-(b.status==='live'?0:1));
   const grid=$('#grid'),before=new Map($$('#grid a.card,#grid .card').map(el=>[el.dataset.id||el.querySelector('h3').textContent,el.getBoundingClientRect()]));
   grid.innerHTML=list.map(card).join('');
   $$('#grid > li').forEach((li,i)=>li.style.setProperty('--i',Math.min(i,8)));
-  /* rings fill from empty */
-  requestAnimationFrame(()=>requestAnimationFrame(()=>$$('#grid .ring .val').forEach(v=>v.style.strokeDashoffset=v.dataset.to)));
+  /* progress bars fill from empty */
+  requestAnimationFrame(()=>requestAnimationFrame(()=>$$('#grid .bar i').forEach(v=>v.classList.remove('zero'))));
   if(motion()&&before.size){$$('#grid > li').forEach(li=>{li.classList.add('in');const el=li.firstElementChild,k=el.dataset.id||el.querySelector('h3').textContent,r0=before.get(k),r1=el.getBoundingClientRect();
     if(r0)li.animate([{transform:`translate(${r0.left-r1.left}px,${r0.top-r1.top}px)`},{transform:'none'}],{duration:420,easing:'cubic-bezier(.2,.8,.2,1)'});
     else li.animate([{opacity:0,transform:'scale(.96)'},{opacity:1,transform:'none'}],{duration:320,easing:'ease-out'});});}
@@ -530,12 +567,35 @@ function render(){
 $('#q').addEventListener('input',e=>{query=e.target.value;render();});
 $('#grid').addEventListener('click',e=>{const a=e.target.closest('a.card');if(a)event('open:'+a.dataset.id);});
 render();
-/* resume: the course sites remember the last module opened on this device ({id,t,ts} under <prefix>last); show the newest one. Read-only. */
-{let best=null;COURSES.filter(c=>c.status==='live'&&c.prefix).forEach(c=>{try{const o=JSON.parse(localStorage.getItem(c.prefix+'last')||'null');if(o&&typeof o.id==='string'&&/^[\w-]+$/.test(o.id)&&typeof o.t==='string'&&Number.isFinite(o.ts)&&(!best||o.ts>best.o.ts))best={c,o};}catch(e){}});
-  if(best){const a=$('#resume');a.href=new URL(best.c.url,location.href).href+'#'+best.o.id;a.style.setProperty('--c',safeColor(best.c.accent));$('#resume-t').textContent=best.o.t+' · '+best.c.title;a.hidden=false;}}
 /* progress may change in another tab */
-addEventListener('storage',e=>{if(!e.key||COURSES.some(c=>c.progressKey===e.key))render();});
-addEventListener('pageshow',e=>{if(e.persisted)render();});
+addEventListener('storage',e=>{if(!e.key||COURSES.some(c=>c.progressKey===e.key||c.prefix+'last'===e.key)){render();resume();}});
+addEventListener('pageshow',e=>{if(e.persisted){render();resume();}});
+
+/* Continue where you left off: each course site saves <prefix>last = {id, t, ts} when a module opens. Read-only here. */
+function last(c){
+  if(c.status!=='live'||!/^[a-z]+-$/.test(c.prefix||''))return null;
+  let d=null;try{d=JSON.parse(localStorage.getItem(c.prefix+'last'));}catch(e){return null;}
+  if(!d||typeof d!=='object'||!/^[a-z0-9_-]{1,40}$/i.test(String(d.id||'')))return null;
+  return {c,id:String(d.id),t:typeof d.t==='string'&&d.t.trim()?d.t.trim().slice(0,80):null,at:Number(d.ts)||0};
+}
+function resume(){
+  const el=$('#resume'),best=COURSES.map(last).filter(Boolean).sort((a,b)=>b.at-a.at)[0];
+  if(!best){el.hidden=true;return;}
+  const c=best.c,p=progress(c);
+  el.href=safeUrl(c.url)+'#'+encodeURIComponent(best.id);el.dataset.id=c.id;el.style.setProperty('--accent',safeColor(c.accent));
+  el.innerHTML=`<span class="icon" data-s="${esc(c.subject)}">${ICONS[c.subject]||ICONS.Science}</span><span><small>Continue where you left off</small><b>${esc(c.title)} · ${esc(best.t||best.id)}</b>${p&&p.total?`<span class="sub">${p.done} of ${p.total} modules done</span>`:''}</span>${ARROW.replace('<svg','<svg class="go"')}`;
+  el.hidden=false;
+}
+resume();
+$('#resume').addEventListener('click',e=>event('continue:'+e.currentTarget.dataset.id));
+
+/* Try a lab now: open one strong simulation directly */
+{const t=window.TRY_LAB||{},c=COURSES.find(x=>x.id===t.course&&x.status==='live');
+  if(c&&/^[a-z0-9_-]+$/i.test(t.module||'')){const a=$('#try');a.href=safeUrl(c.url)+'?lab#'+t.module;
+    const n=$('#trynote');n.textContent=`Opens the ${t.name||t.module} simulation in ${c.title}. No sign-up.`;n.hidden=false;
+    a.addEventListener('click',()=>event('try:'+c.id+'/'+t.module));}
+  const em=COURSES.find(x=>x.id==='em'&&x.status==='live');if(em)$('#flink').href=safeUrl(em.url)+'#efield';else $('#flink').hidden=true;
+  $('#flink').addEventListener('click',()=>event('try:em/efield'));}
 
 /* ---------- motion helpers ---------- */
 function motion(){return !REDUCE.matches;}
@@ -577,41 +637,58 @@ $('#grid').addEventListener('pointermove',e=>{if(!FINE.matches||!motion())return
   c.style.setProperty('--mx',(x*100).toFixed(1)+'%');c.style.setProperty('--my',(y*100).toFixed(1)+'%');c.style.setProperty('--ry',((x-.5)*6).toFixed(2)+'deg');c.style.setProperty('--rx',((.5-y)*6).toFixed(2)+'deg');});
 $('#grid').addEventListener('pointerout',e=>{const c=e.target.closest('a.card');if(c&&!c.contains(e.relatedTarget)){c.style.removeProperty('--rx');c.style.removeProperty('--ry');}});
 
-/* Hero background: drifting charges with field lines. Your pointer acts like a charge: + dots lean toward it,
-   - dots away, and field lines reach out to it. Tap or click to send a ripple through the field. */
+/* Hero: a real electric field. Two point charges, +q and −q; the lines follow E = Σ kq r̂ / r² and run from + to −.
+   Drag either charge (or focus it and use the arrow keys). Moving dashes show the direction of E. */
 const field=(function(){
-  const cv=$('#field'),ctx=cv.getContext('2d'),hero=cv.parentElement;let W=0,H=0,dpr=1,pts=[],rgb='124,180,255',raf=0,visible=true;
-  const ptr={x:0,y:0,on:false},ripples=[];
-  function recolor(){rgb=getComputedStyle(document.documentElement).getPropertyValue('--dot').trim()||rgb;if(REDUCE.matches||!raf)draw();}
-  function size(){const r=cv.getBoundingClientRect();dpr=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);
-    const n=Math.round(Math.min(70,Math.max(24,W*H/14000)));let s=7;const rnd=()=>(s=(s*16807)%2147483647)/2147483647;
-    pts=Array.from({length:n},()=>{const vx=(rnd()-.5)*.22,vy=(rnd()-.5)*.22;return {x:rnd()*W,y:rnd()*H,vx,vy,vx0:vx,vy0:vy,r:1+rnd()*1.6,q:rnd()<.5};});}
-  function draw(){ctx.clearRect(0,0,W,H);const L=130;
-    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const a=pts[i],b=pts[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.hypot(dx,dy);
-      if(d<L){const al=(1-d/L)*.22;ctx.strokeStyle=`rgba(${rgb},${al.toFixed(3)})`;ctx.lineWidth=1;ctx.beginPath();
-        /* a gentle arc, like a field line, bowing away from the midpoint */
-        const mx=(a.x+b.x)/2-dy*.18,my=(a.y+b.y)/2+dx*.18;ctx.moveTo(a.x,a.y);ctx.quadraticCurveTo(mx,my,b.x,b.y);ctx.stroke();}}
-    for(const p of pts){ctx.fillStyle=`rgba(${rgb},${p.q?.75:.45})`;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,7);ctx.fill();}
-    if(ptr.on){const R=180;for(const p of pts){const dx=p.x-ptr.x,dy=p.y-ptr.y,d=Math.hypot(dx,dy);if(d<R){ctx.strokeStyle=`rgba(${rgb},${((1-d/R)*.45).toFixed(3)})`;ctx.lineWidth=1.2;
-        ctx.beginPath();ctx.moveTo(ptr.x,ptr.y);ctx.quadraticCurveTo((p.x+ptr.x)/2+dy*.22,(p.y+ptr.y)/2-dx*.22,p.x,p.y);ctx.stroke();}}
-      const g=ctx.createRadialGradient(ptr.x,ptr.y,0,ptr.x,ptr.y,26);g.addColorStop(0,`rgba(${rgb},.55)`);g.addColorStop(1,`rgba(${rgb},0)`);ctx.fillStyle=g;ctx.beginPath();ctx.arc(ptr.x,ptr.y,26,0,7);ctx.fill();}
-    for(const w of ripples){ctx.strokeStyle=`rgba(${rgb},${(.5*(1-w.t)).toFixed(3)})`;ctx.lineWidth=2;ctx.beginPath();ctx.arc(w.x,w.y,w.t*220,0,7);ctx.stroke();}}
-  function step(){
-    for(const p of pts){
-      if(ptr.on){const dx=ptr.x-p.x,dy=ptr.y-p.y,d=Math.max(30,Math.hypot(dx,dy));if(d<220){const f=(p.q?1:-1)*14/(d*d);p.vx+=dx*f;p.vy+=dy*f;}}
-      for(const w of ripples){const dx=p.x-w.x,dy=p.y-w.y,d=Math.hypot(dx,dy)||1,front=w.t*220;if(Math.abs(d-front)<18){p.vx+=dx/d*.35;p.vy+=dy/d*.35;}}
-      p.vx+=(p.vx0-p.vx)*.025;p.vy+=(p.vy0-p.vy)*.025;const sp=Math.hypot(p.vx,p.vy);if(sp>2.2){p.vx*=2.2/sp;p.vy*=2.2/sp;}
-      p.x+=p.vx;p.y+=p.vy;if(p.x<-10)p.x=W+10;if(p.x>W+10)p.x=-10;if(p.y<-10)p.y=H+10;if(p.y>H+10)p.y=-10;}
-    for(let i=ripples.length-1;i>=0;i--){ripples[i].t+=.018;if(ripples[i].t>=1)ripples.splice(i,1);}
-    draw();raf=requestAnimationFrame(step);}
+  const cv=$('#field'),ctx=cv.getContext('2d'),hero=cv.parentElement,stage=$('#stage');
+  let W=0,H=0,dpr=1,rgb='124,180,255',raf=0,visible=true,off=0,lines=[],box={x:0,y:0,w:1,h:1},used=false;
+  const Q=[{el:$('#qpos'),q:1,fx:.28,fy:.42},{el:$('#qneg'),q:-1,fx:.74,fy:.42}];
+  const PAD=28;
+  function E(x,y){let ex=0,ey=0;for(const c of Q){const dx=x-c.x,dy=y-c.y,r2=dx*dx+dy*dy+1e-9,k=c.q/(r2*Math.sqrt(r2));ex+=k*dx;ey+=k*dy;}return [ex,ey];}
+  /* follow the field (s=+1) or against it (s=-1) from (x,y), midpoint method, fixed 3 px steps */
+  function trace(x,y,s,goal){const pts=[x,y],h=3;
+    for(let i=0;i<1200;i++){let [ex,ey]=E(x,y),m=Math.hypot(ex,ey)||1;const mx=x+s*h/2*ex/m,my=y+s*h/2*ey/m;[ex,ey]=E(mx,my);m=Math.hypot(ex,ey)||1;
+      x+=s*h*ex/m;y+=s*h*ey/m;pts.push(x,y);
+      if(Math.hypot(x-goal.x,y-goal.y)<14)return {pts,hit:true};
+      if(x<-60||x>W+60||y<-60||y>H+60)return {pts,hit:false};}
+    return {pts,hit:false};}
+  function compute(){lines=[];const [p,n]=Q,N=16,r=16,a0=Math.atan2(n.y-p.y,n.x-p.x);
+    for(let i=0;i<N;i++){const a=a0+(i+.5)*2*Math.PI/N;lines.push(trace(p.x+r*Math.cos(a),p.y+r*Math.sin(a),1,n).pts);}
+    /* lines that come in from far away and end on −q (the ones that start on +q are already drawn) */
+    for(let i=0;i<N;i++){const a=a0+Math.PI+(i+.5)*2*Math.PI/N,t=trace(n.x+r*Math.cos(a),n.y+r*Math.sin(a),-1,p);
+      if(!t.hit){const q=[];for(let k=t.pts.length-2;k>=0;k-=2)q.push(t.pts[k],t.pts[k+1]);lines.push(q);}}}
+  function path(L){ctx.beginPath();ctx.moveTo(L[0],L[1]);for(let k=2;k<L.length;k+=2)ctx.lineTo(L[k],L[k+1]);}
+  function draw(){ctx.clearRect(0,0,W,H);ctx.lineCap='round';
+    for(const L of lines){path(L);ctx.setLineDash([]);ctx.lineWidth=1.3;ctx.strokeStyle=`rgba(${rgb},.32)`;ctx.stroke();
+      if(!REDUCE.matches){ctx.setLineDash([2,16]);ctx.lineDashOffset=-off;ctx.lineWidth=3;ctx.strokeStyle=`rgba(${rgb},.85)`;ctx.stroke();}
+      /* an arrowhead part way along each line */
+      const k=Math.min(L.length-4,2*36);if(k>2){const x=L[k],y=L[k+1],ang=Math.atan2(L[k+3]-L[k+1],L[k+2]-L[k]);ctx.setLineDash([]);ctx.fillStyle=`rgba(${rgb},.7)`;ctx.beginPath();
+        ctx.moveTo(x+7*Math.cos(ang),y+7*Math.sin(ang));ctx.lineTo(x+5*Math.cos(ang+2.5),y+5*Math.sin(ang+2.5));ctx.lineTo(x+5*Math.cos(ang-2.5),y+5*Math.sin(ang-2.5));ctx.fill();}}
+    ctx.setLineDash([]);}
+  function place(){for(const c of Q){c.x=box.x+c.fx*box.w;c.y=box.y+c.fy*box.h;c.el.style.transform=`translate(${(c.fx*box.w).toFixed(1)}px,${(c.fy*box.h).toFixed(1)}px)`;}compute();draw();}
+  function size(){const r=hero.getBoundingClientRect(),s=stage.getBoundingClientRect();dpr=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;
+    cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);
+    /* charges stay inside the stage, above the caption */
+    const cap=stage.querySelector('.flabel').offsetHeight;box={x:s.left-r.left,y:s.top-r.top,w:s.width,h:Math.max(80,s.height-cap-PAD)};
+    const cx=box.x+box.w/2,cy=box.y+box.h/2,narrow=r.width<=860,mk=`radial-gradient(${Math.round(box.w*(narrow?.75:.95))}px ${Math.round(box.h*(narrow?.62:1.05))}px at ${Math.round(cx)}px ${Math.round(cy)}px,#000 45%,transparent 100%)`;
+    cv.style.webkitMaskImage=mk;cv.style.maskImage=mk;place();}
+  function recolor(){rgb=getComputedStyle(document.documentElement).getPropertyValue('--dot').trim()||rgb;draw();}
+  function step(){off=(off+.6)%18;draw();raf=requestAnimationFrame(step);}
   function start(){stop();if(!REDUCE.matches&&visible&&!document.hidden)raf=requestAnimationFrame(step);else draw();}
   function stop(){cancelAnimationFrame(raf);raf=0;}
-  const at=e=>{const r=cv.getBoundingClientRect();ptr.x=e.clientX-r.left;ptr.y=e.clientY-r.top;};
-  hero.addEventListener('pointermove',e=>{if(e.target.closest('a,button'))return void(ptr.on=false);at(e);ptr.on=true;});
-  hero.addEventListener('pointerleave',()=>{ptr.on=false;});
-  hero.addEventListener('pointerdown',e=>{if(e.target.closest('a,button')||!motion())return;at(e);ripples.push({x:ptr.x,y:ptr.y,t:0});if(ripples.length>4)ripples.shift();if(e.pointerType!=='mouse')setTimeout(()=>{ptr.on=false;},600);});
+  function moveTo(c,px,py){const o=Q.find(x=>x!==c);
+    let fx=Math.min(1,Math.max(0,(px-box.x)/box.w)),fy=Math.min(1,Math.max(0,(py-box.y)/box.h));
+    /* keep the charges apart, so the field never blows up between them */
+    const dx=(fx-o.fx)*box.w,dy=(fy-o.fy)*box.h;if(Math.hypot(dx,dy)<44)return;
+    c.fx=fx;c.fy=fy;place();if(!used){used=true;event('hero:drag');}c.el.classList.add('moved');}
+  for(const c of Q){const el=c.el;let id=null;
+    el.addEventListener('pointerdown',e=>{id=e.pointerId;el.setPointerCapture(id);el.classList.add('drag');e.preventDefault();});
+    el.addEventListener('pointermove',e=>{if(e.pointerId!==id)return;const r=hero.getBoundingClientRect();moveTo(c,e.clientX-r.left,e.clientY-r.top);});
+    const end=e=>{if(e.pointerId!==id)return;id=null;el.classList.remove('drag');};el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);
+    el.addEventListener('keydown',e=>{const d=e.shiftKey?40:12,v={ArrowLeft:[-d,0],ArrowRight:[d,0],ArrowUp:[0,-d],ArrowDown:[0,d]}[e.key];if(!v)return;e.preventDefault();moveTo(c,c.x+v[0],c.y+v[1]);});}
   size();recolor();start();
-  let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{size();draw();},120);});
+  let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(size,120);});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(size);
   document.addEventListener('visibilitychange',start);
   if(REDUCE.addEventListener)REDUCE.addEventListener('change',start);
   matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',recolor);
