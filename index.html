@@ -107,6 +107,7 @@ h1 span{background-image:linear-gradient(100deg,var(--brand),var(--violet),var(-
 .stats li{display:flex;flex-direction:column;gap:2px;min-width:112px;padding:12px 16px;border:1px solid var(--line);border-radius:14px;background:color-mix(in srgb,var(--surface) 72%,transparent);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .stats b{font:800 24px/1.1 var(--f-display);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .stats span{font-size:13px;color:var(--muted)}
+.stats li[hidden]{display:none}
 .hint{margin:16px 0 0;font:500 12px var(--f-mono);letter-spacing:.04em;color:var(--muted)}
 @media (hover:none){.hint{display:none}}
 
@@ -150,9 +151,11 @@ a.card:hover::after{opacity:1}
 .card>*{position:relative;z-index:1}
 a.card:hover .icon[data-s="Physics"] svg{animation:spin 6s linear infinite}
 a.card:hover .icon[data-s="Chemistry"] svg{animation:swirl 1.2s ease-in-out infinite}
+a.card:hover .icon[data-s="Biology"] svg{animation:twist 2s ease-in-out infinite}
 a.card:hover .icon[data-s="Math"] svg path:first-child{stroke-dasharray:1;animation:draw 1.4s var(--ease) both}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes swirl{0%,100%{transform:rotate(0)}25%{transform:rotate(-12deg)}75%{transform:rotate(12deg)}}
+@keyframes twist{0%,100%{transform:scaleX(1)}50%{transform:scaleX(.35)}}
 @keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
 a.card:focus-visible{outline-offset:4px;border-radius:18px}
 .card .row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px}
@@ -264,8 +267,10 @@ footer .flinks{flex-basis:100%;display:flex;flex-wrap:wrap;gap:0 24px;border-top
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M12 7v7M9 11l3 3 3-3"/></svg>Get the app</button>
     </div>
     <ul class="stats" id="stats" aria-label="At a glance">
-      <li><b data-count="courses">4</b><span>courses</span></li>
-      <li><b data-count="modules">149</b><span>modules</span></li>
+      <li><b data-count="courses">5</b><span>courses</span></li>
+      <li><b data-count="modules">196</b><span>modules</span></li>
+      <li id="u-visitors" hidden><b data-n>0</b><span>visitors</span></li>
+      <li id="u-views" hidden><b data-n>0</b><span>page views</span></li>
       <li><b>Free</b><span>no sign-up</span></li>
       <li><b>Offline</b><span>as an app</span></li>
     </ul>
@@ -496,6 +501,16 @@ reveal();
     if(!anim){rot.replaceChildren(b);return;}const old=rot.firstElementChild;b.className='in';rot.appendChild(b);rot.style.position='relative';b.style.position='absolute';b.style.left='0';b.style.top='0';
     requestAnimationFrame(()=>{old&&old.classList.add('out');b.classList.remove('in');});setTimeout(()=>{old&&old.remove();b.style.position='';},480);};
   if(words.length){show(words[0],false);if(motion()&&words.length>1)setInterval(()=>{if(document.hidden)return;k=(k+1)%words.length;show(words[k],true);},2600);}}
+
+/* usage: public GoatCounter totals, read-only. Same rules as the counter itself: live site only, never under Do Not Track / Global Privacy Control.
+   Needs "Allow adding visitor counts on your website" turned on in GoatCounter. Hidden until it is on and there is a real number to show. */
+const USAGE_MIN=50;
+function showUsage(j){if(!j)return;const num=v=>parseInt(String(v==null?'':v).replace(/\D/g,''),10)||0;
+  [['u-views',num(j.count)],['u-visitors',num(j.count_unique)]].forEach(([id,n])=>{const li=document.getElementById(id);if(!li||n<USAGE_MIN)return;li.hidden=false;
+    const b=li.querySelector('b'),fmt=x=>x.toLocaleString('en-US');b.textContent=fmt(n);
+    if(motion()){const t0=performance.now(),tick=t=>{const f=Math.min(1,(t-t0)/1100),e=1-Math.pow(1-f,3);b.textContent=fmt(Math.round(n*e));if(f<1)requestAnimationFrame(tick);};requestAnimationFrame(tick);}});}
+window.showUsage=showUsage;
+if(gcOn&&window.fetch)fetch('https://'+GOATCOUNTER+'.goatcounter.com/counter/TOTAL.json',{credentials:'omit'}).then(r=>r.ok?r.json():null).then(showUsage).catch(()=>{});
 
 /* stats: count up when they come into view */
 {const live=COURSES.filter(c=>c.status==='live');const vals={courses:live.length,modules:live.reduce((n,c)=>n+(Number.isFinite(c.modules)?c.modules:0),0)};

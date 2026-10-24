@@ -74,5 +74,20 @@ window.COURSES = [
     prefix: 'calc-',
     progressKey: 'calc-done',
     label: 'course:calc'
+  },
+  {
+    id: 'bio',
+    title: 'Biology Lab',
+    course: 'AP Biology',
+    subject: 'Biology',
+    description: 'Watch it happen: membranes, enzymes, inheritance, evolution and ecosystems as live models, with worked examples and randomized practice.',
+    modules: 47,
+    topics: ['Chemistry of life', 'Cells', 'Energetics', 'Genetics', 'Evolution', 'Ecology'],
+    url: 'https://jiacode2030.github.io/biology-lab/',
+    status: 'live',
+    accent: '#F5B35C',
+    prefix: 'bio-',
+    progressKey: 'bio-done',
+    label: 'course:bio'
   }
 ];

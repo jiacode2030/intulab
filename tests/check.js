@@ -64,7 +64,7 @@ const server = http.createServer((q, r) => {
       ok(!low.length, tag, 'text contrast >= 4.5:1', low.join(' '));
       const dup = await p.evaluate(() => { const s = {}; return [...document.querySelectorAll('[id]')].map(e => e.id.toLowerCase()).filter(i => s[i] ? 1 : (s[i] = 1, 0)); });
       ok(!dup.length, tag, 'no ids that differ only by case', dup.join(','));
-      ok(JSON.stringify(await p.evaluate(() => [...document.querySelectorAll('h1,h2,h3')].filter(h => !h.closest('dialog')).map(h => h.tagName))) === JSON.stringify(['H1', 'H2', 'H3', 'H3', 'H3', 'H3', 'H2', 'H3', 'H3', 'H3']), tag, 'heading order');
+      ok(JSON.stringify(await p.evaluate(() => [...document.querySelectorAll('h1,h2,h3')].filter(h => !h.closest('dialog')).map(h => h.tagName))) === JSON.stringify(['H1', 'H2', 'H3', 'H3', 'H3', 'H3', 'H3', 'H2', 'H3', 'H3', 'H3']), tag, 'heading order');
     }
     ok(!errs.length, tag, 'no console errors', errs.join(' | '));
     await p.screenshot({ path: path.join(OUT, `${scheme}-${w}.png`), fullPage: true });
@@ -76,7 +76,7 @@ const server = http.createServer((q, r) => {
   await p.goto(URL); await p.evaluate(s => { for (const k in s) localStorage.setItem(k, s[k]); }, SEED); await p.reload();
   const snap = () => p.evaluate(() => JSON.stringify(Object.keys(localStorage).filter(k => k !== 'hub-theme').sort().map(k => [k, localStorage.getItem(k)])));
   const before = await snap();
-  ok(JSON.stringify(await p.$$eval('.chip', c => c.map(x => x.textContent))) === '["All","Physics","Chemistry","Math"]', 'only subjects that have a course');
+  ok(JSON.stringify(await p.$$eval('.chip', c => c.map(x => x.textContent))) === '["All","Physics","Chemistry","Biology","Math"]', 'only subjects that have a course');
   await p.click('.chip:text("Chemistry")'); ok(await p.$$eval('.card', c => c.length) === 1, 'Chemistry filter');
   await p.click('.chip:text("All")'); await p.fill('#q', 'induction'); ok(await p.$$eval('.card h3', c => c.map(x => x.textContent).join()) === 'E&M Lab', 'search by topic');
   await p.fill('#q', 'zzzz'); ok(await p.isVisible('#empty'), 'empty state');
@@ -105,6 +105,13 @@ const server = http.createServer((q, r) => {
     ok(!e2.length, f, w, 'no page errors', e2.join(' | '));
     await q.close();
   }
+  // usage totals: hidden by default (no counter off the live site), shown only for real numbers
+  await p.goto(URL);
+  ok(await p.evaluate(() => document.getElementById('u-views').hidden && document.getElementById('u-visitors').hidden), 'usage cards hidden when no counter data');
+  await p.evaluate(() => showUsage({ count: '7' })); ok(await p.evaluate(() => document.getElementById('u-views').hidden), 'usage: tiny totals stay hidden');
+  await p.evaluate(() => showUsage({ count: '12,345', count_unique: '4 321' })); await p.waitForTimeout(1500);
+  ok(await p.evaluate(() => document.querySelector('#u-views b').textContent === '12,345' && document.querySelector('#u-visitors b').textContent === '4,321' && !document.getElementById('u-views').hidden), 'usage: totals show with thousands separators');
+  await p.evaluate(() => showUsage(null)); await p.evaluate(() => showUsage({})); ok(true, 'usage: empty answers are ignored');
   await p.goto(URL);
   ok(JSON.stringify(await p.$$eval('footer .flinks a', a => a.map(x => x.getAttribute('href').replace(/^http.*/, 'github')))) === '["privacy.html","terms.html","github"]', 'footer links: privacy, terms, report');
   ok(await p.evaluate(() => /Created by JL/.test(document.querySelector('footer').innerText) && /© 2026 JL/.test(document.querySelector('footer').innerText) && /Last updated/.test(document.querySelector('footer').innerText)), 'footer: credit, copyright, last updated');

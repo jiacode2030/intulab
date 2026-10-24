@@ -5,7 +5,7 @@
 const path = require('path'), fs = require('fs'), http = require('http');
 const { chromium, devices } = require(require('child_process').execSync('npm root -g').toString().trim() + '/playwright');
 const ROOT = path.resolve(process.argv[2] || path.join(__dirname, '..', '..'));
-const COURSES = [['physics-mechanics', 'Mechanics Lab'], ['physics-em', 'E&M Lab'], ['chemistry-lab', 'Chemistry Lab'], ['calculus-lab', 'Calculus Lab']];
+const COURSES = [['physics-mechanics', 'Mechanics Lab'], ['physics-em', 'E&M Lab'], ['chemistry-lab', 'Chemistry Lab'], ['calculus-lab', 'Calculus Lab'], ['biology-lab', 'Biology Lab']];
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.png': 'image/png', '.webmanifest': 'application/manifest+json' };
 let fails = 0; const ok = (c, ...a) => c ? console.log('ok  ', ...a) : (fails++, console.log('FAIL', ...a));
 
@@ -71,7 +71,7 @@ const server = http.createServer((q, r) => {
     const active = () => p.evaluate(() => navigator.serviceWorker.getRegistrations().then(rs => rs.filter(r => r.active).map(r => new URL(r.scope).pathname).sort()));
     let scopes = [];
     for (let i = 0; i < 60 && scopes.length < COURSES.length + 1; i++) { scopes = await active(); if (scopes.length < COURSES.length + 1) await p.waitForTimeout(500); }
-    ok(JSON.stringify(scopes) === JSON.stringify(['/calculus-lab/', '/chemistry-lab/', '/intulab/', '/physics-em/', '/physics-mechanics/']), 'app saved the landing page and all three courses', JSON.stringify(scopes));
+    ok(JSON.stringify(scopes) === JSON.stringify(['/biology-lab/', '/calculus-lab/', '/chemistry-lab/', '/intulab/', '/physics-em/', '/physics-mechanics/']), 'app saved the landing page and all three courses', JSON.stringify(scopes));
     await p.waitForTimeout(1500); // let precache finish writing
     await ctx.setOffline(true);
     for (const [site, title] of [['intulab', 'Intulab'], ...COURSES]) {

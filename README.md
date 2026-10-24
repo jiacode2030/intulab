@@ -89,7 +89,7 @@ Each course site has its own color, so they're easy to tell apart. Pick a new on
 | E&M Lab | violet `#A78BFA` |
 | Chemistry Lab | sage green `#3DD6A3` |
 | Calculus Lab | ocean aqua `#5FD0DA` (site theme: aqua) |
-| Biology Lab (coming) | shell and amber |
+| Biology Lab | shell and amber (accent `#F5B35C`) |
 
 ## Deploy
 
@@ -150,6 +150,7 @@ The values per site are:
 | E&M | `E&M Lab` | `course:em` |
 | Chemistry | `Chemistry Lab` | `course:chem` |
 | Calculus | `Calculus Lab` | `course:calc` |
+| Biology | `Biology Lab` | `course:bio` |
 
 (GitHub applies the `labels=` URL parameter only for people with triage access. For everyone else, the workflow labels the issue from the `**Course:**` line.)
 
@@ -183,6 +184,8 @@ window.goatcounter?.count?.({path:'module:'+id, title:'module:'+id, event:true})
 ```
 
 Use `module:<id>` for opens and `done:<id>` for "marked as done" (for example, call it in `setDone` when `v` is true).
+
+**Public totals on the landing page.** The "visitors" and "page views" cards read `https://intulab.goatcounter.com/counter/TOTAL.json`. Turn on **Settings → Allow adding visitor counts on your website** in GoatCounter or the cards stay hidden. They also stay hidden under Do Not Track / Global Privacy Control, off the live site, and until a total passes `USAGE_MIN` in `index.html` (50).
 
 **Reading the counts.** In the GoatCounter dashboard:
 
