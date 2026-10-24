@@ -90,6 +90,7 @@ Each course site has its own color, so they're easy to tell apart. Pick a new on
 | Chemistry Lab | sage green `#3DD6A3` |
 | Calculus Lab | ocean aqua `#5FD0DA` (site theme: aqua) |
 | Biology Lab | shell and amber (accent `#F5B35C`) |
+| Precalculus Lab (planned) | rose-magenta pink, as in the Precalculus preview (pick the exact accent when it is added; keep it clearly apart from E&M violet `#A78BFA`) |
 
 ## Deploy
 
