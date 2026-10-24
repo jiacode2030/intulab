@@ -76,6 +76,21 @@ window.COURSES = [
     label: 'course:calc'
   },
   {
+    id: 'precalc',
+    title: 'Precalculus Lab',
+    course: 'AP Precalculus',
+    subject: 'Math',
+    description: 'Polar graphs you can drag and spin: the unit circle, sinusoids, inverse trig and parametric motion as live pictures, with worked examples and randomized practice.',
+    modules: 10,
+    topics: ['Unit circle', 'Sinusoids', 'Trig equations', 'Polar graphs', 'Parametric'],
+    url: 'https://jiacode2030.github.io/precalculus-lab/',
+    status: 'live',
+    accent: '#F27BAF',
+    prefix: 'prec-',
+    progressKey: 'prec-done',
+    label: 'course:precalc'
+  },
+  {
     id: 'bio',
     title: 'Biology Lab',
     course: 'AP Biology',
