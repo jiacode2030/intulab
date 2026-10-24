@@ -526,7 +526,7 @@ function showUsage(j){if(!j)return;const num=v=>parseInt(String(v==null?'':v).re
     const b=li.querySelector('b'),fmt=x=>x.toLocaleString('en-US');b.textContent=fmt(n);
     if(motion()){const t0=performance.now(),tick=t=>{const f=Math.min(1,(t-t0)/1100),e=1-Math.pow(1-f,3);b.textContent=fmt(Math.round(n*e));if(f<1)requestAnimationFrame(tick);};requestAnimationFrame(tick);}});}
 window.showUsage=showUsage;
-if(gcOn&&window.fetch)fetch('https://'+GOATCOUNTER+'.goatcounter.com/counter/TOTAL.json',{credentials:'omit'}).then(r=>r.ok?r.json():null).then(showUsage).catch(()=>{});
+if(gcOn&&window.fetch)fetch('https://'+GOATCOUNTER+'.goatcounter.com/counter/TOTAL.json?t='+Date.now(),{credentials:'omit',cache:'no-store'}).then(r=>r.ok?r.json():null).then(showUsage).catch(()=>{});
 
 /* stats: count up when they come into view */
 {const live=COURSES.filter(c=>c.status==='live');const vals={courses:live.length,modules:live.reduce((n,c)=>n+(Number.isFinite(c.modules)?c.modules:0),0)};
