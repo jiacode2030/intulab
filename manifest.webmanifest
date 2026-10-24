@@ -2,7 +2,7 @@
   "id": "/intulab/",
   "name": "Intulab",
   "short_name": "Intulab",
-  "description": "Interactive, intuition-first study sites for AP sciences.",
+  "description": "Interactive, intuition-first study sites for AP science and math.",
   "start_url": "/intulab/",
   "scope": "/",
   "display": "standalone",

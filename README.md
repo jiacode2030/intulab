@@ -1,6 +1,6 @@
 # Intulab
 
-Interactive, intuition-first study sites for AP sciences. This repo (`jiacode2030/intulab`) is the landing page at https://jiacode2030.github.io/intulab/, which links to each course site.
+Interactive, intuition-first study sites for AP science and math. This repo (`jiacode2030/intulab`) is the landing page at https://jiacode2030.github.io/intulab/, which links to each course site.
 
 It's plain static files with no build step:
 
