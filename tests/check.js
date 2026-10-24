@@ -64,7 +64,7 @@ const server = http.createServer((q, r) => {
       ok(!low.length, tag, 'text contrast >= 4.5:1', low.join(' '));
       const dup = await p.evaluate(() => { const s = {}; return [...document.querySelectorAll('[id]')].map(e => e.id.toLowerCase()).filter(i => s[i] ? 1 : (s[i] = 1, 0)); });
       ok(!dup.length, tag, 'no ids that differ only by case', dup.join(','));
-      ok(JSON.stringify(await p.evaluate(() => [...document.querySelectorAll('h1,h2,h3')].filter(h => !h.closest('dialog')).map(h => h.tagName))) === JSON.stringify(['H1', 'H2', 'H3', 'H3', 'H3', 'H3', 'H3', 'H2', 'H3', 'H3', 'H3']), tag, 'heading order');
+      ok(JSON.stringify(await p.evaluate(() => [...document.querySelectorAll('h1,h2,h3')].filter(h => !h.closest('dialog')).map(h => h.tagName))) === JSON.stringify(['H1', 'H2', 'H3', 'H3', 'H3', 'H3', 'H3', 'H3', 'H2', 'H3', 'H3', 'H3']), tag, 'heading order');
     }
     ok(!errs.length, tag, 'no console errors', errs.join(' | '));
     await p.screenshot({ path: path.join(OUT, `${scheme}-${w}.png`), fullPage: true });
