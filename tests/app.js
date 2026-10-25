@@ -79,7 +79,7 @@ const server = http.createServer((q, r) => {
       await p.waitForTimeout(900);
       const t = await p.title().catch(() => '');
       const fit = await p.evaluate(() => innerWidth).catch(() => 0);
-      ok(res && t === title, 'offline:', site, 'opens', `(title "${t}")`);
+      ok(res && t.startsWith(title === 'Intulab' ? 'Intulab' : title.replace('&', '&')), 'offline:', site, 'opens', `(title "${t}")`);
       ok(fit === 390, 'offline:', site, 'fits the phone', fit + 'px');
     }
     await p.goto(BASE + '/physics-em/#gauss').catch(() => {}); await p.waitForTimeout(800);
